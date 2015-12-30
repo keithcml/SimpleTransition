@@ -22,7 +22,7 @@ pod "SimpleTransition"
 
 ## Author
 
-Keith, keith.chan@mbounce.com
+Mingloan, mingloanchan@gmail.com
 
 ## License
 

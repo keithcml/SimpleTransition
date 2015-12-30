@@ -1,0 +1,6 @@
+framework module SimpleTransition {
+  umbrella header "SimpleTransition-umbrella.h"
+
+  export *
+  module * { export * }
+}
