@@ -1,15 +1,15 @@
 {
   "name": "SimpleTransition",
   "version": "0.1.0",
-  "summary": "A short description of SimpleTransition.",
-  "description": "",
-  "homepage": "https://github.com/<GITHUB_USERNAME>/SimpleTransition",
+  "summary": "A simple way to create custom presentation transition.",
+  "description": "iOS Custom Animated Transitioning for view controller presentation",
+  "homepage": "https://github.com/MingLoan/SimpleTranistion",
   "license": "MIT",
   "authors": {
-    "Keith": "keith.chan@mbounce.com"
+    "Mingloan": "mingloanchan@gmail.com"
   },
   "source": {
-    "git": "https://github.com/<GITHUB_USERNAME>/SimpleTransition.git",
+    "git": "https://github.com/MingLoan/SimpleTranistion.git",
     "tag": "0.1.0"
   },
   "platforms": {

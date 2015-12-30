@@ -65,10 +65,16 @@
                                     <segment title="Dissolve"/>
                                     <segment title="Translate"/>
                                 </segments>
+                                <connections>
+                                    <action selector="animationChanged:" destination="vXZ-lx-hvc" eventType="valueChanged" id="xKa-2D-blO"/>
+                                </connections>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RKD-uS-SqQ">
                                 <rect key="frame" x="251" y="550" width="97" height="30"/>
                                 <state key="normal" title="Present Now!!"/>
+                                <connections>
+                                    <action selector="present:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="a9x-mH-7SO"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Horizontal Alignment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dDr-ZT-q4v">
                                 <rect key="frame" x="229" y="200" width="143" height="18"/>
@@ -162,8 +168,8 @@
                     <connections>
                         <outlet property="animatedMotionLabel" destination="c9A-lr-8wL" id="et6-dd-ifL"/>
                         <outlet property="animatedMotionSegment" destination="rKp-6a-Pg2" id="prC-eO-vQX"/>
-                        <outlet property="animationTypeLabel" destination="szP-WK-Rc0" id="M0U-a6-bNL"/>
-                        <outlet property="animationTypeSegment" destination="Kxp-74-npQ" id="Z7m-Dv-TrA"/>
+                        <outlet property="animationTypeLabel" destination="szP-WK-Rc0" id="Ir0-LR-TEp"/>
+                        <outlet property="animationTypeSegment" destination="Kxp-74-npQ" id="0sC-c9-e6X"/>
                         <outlet property="horizontalAlignmentLabel" destination="dDr-ZT-q4v" id="cVu-QR-Y1K"/>
                         <outlet property="horizontalAlignmentSegment" destination="STV-ID-RPC" id="gwT-KT-8i1"/>
                         <outlet property="presentingViewSizeLabel" destination="O6M-mW-mqb" id="jlZ-ca-m4w"/>

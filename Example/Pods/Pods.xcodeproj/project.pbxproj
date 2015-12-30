@@ -14,13 +14,12 @@
 		02DF5BD2281BA10105A447F95FCF8CF3 /* BeLogical.swift in Sources */ = {isa = PBXBuildFile; fileRef = B011BCE1507648ECA7586CF7DABF6F4C /* BeLogical.swift */; };
 		0483269B590B2D72BC9137FBE007534E /* QCKDSL.m in Sources */ = {isa = PBXBuildFile; fileRef = 2543809E4D3D9755B94735346ACDFF03 /* QCKDSL.m */; };
 		0492354DA7EF0C9068F7B4E8F74001B0 /* FailureMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25961731CF4F7537A5ECD61A000A150C /* FailureMessage.swift */; };
-		0809E012509BE17948A07475CEE1269C /* SimpleTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC682C2F325641938A395C084A0E5C5 /* SimpleTransitionDelegate.swift */; };
 		0A6E71555F55082003A3DB2B03CA85D2 /* AsyncMatcherWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D42013D479CDC11E7882C7C0045B66B /* AsyncMatcherWrapper.swift */; };
 		0F49254A4C560DD4696936F6080756DC /* Nimble-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = BF4AE1E80CC4EA4F2E1FF17CA10A3D26 /* Nimble-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0FE263AF3B51B46DC5811AB65AC0701F /* Pods-SimpleTransition_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3607C4A1FBBDC2EAF1787FF9677839D4 /* Pods-SimpleTransition_Example-dummy.m */; };
-		122D6FC8E118B3F72EAEA08916C1AE5D /* SimplePresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5696C630E6C2BB8284A184BC9F838B6 /* SimplePresentationController.swift */; };
 		1445A807A82A05630FD299DD0EF79B4E /* QuickConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = AE670FBBCC7FBB0E81F05DA0C8EAAEE5 /* QuickConfiguration.m */; };
 		14587AFE1DFDEB30E52BA2F442F198B7 /* QuickConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = F1D4A64A54F414359EC782444B27597B /* QuickConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		161032E5E5ABFB2D7D0AEC3471655F3B /* TransformAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB66CB96256CB0B696FFF85346305F8B /* TransformAnimator.swift */; };
 		1773C40CF7EA4A87C9243574DD4FBAB7 /* Quick.h in Headers */ = {isa = PBXBuildFile; fileRef = D4E0D7E2D11371A45CB3D1221E7B4EC2 /* Quick.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		196EA5CBAD743ACA57EA5799B73AE235 /* QuickSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 62241019A9DFE31F82A2CDF8690A163C /* QuickSpec.m */; };
 		1E28F9362956B758C4C981D3C1129C90 /* BeGreaterThan.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CD67A0263B5D926517C112081F48B2 /* BeGreaterThan.swift */; };
@@ -40,10 +39,10 @@
 		523651465577505384B377EF193AAB0A /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7511682ED488897012E4EEC14429BF /* Filter.swift */; };
 		58EBA2C1A43283FB2188AB1FB592D32B /* DSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9040AB08CA7AEB727960E284F746A4 /* DSL.swift */; };
 		5B39B59F21847CB8B90749AAB2557012 /* World+DSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDA3CDE7515A11BE56C6C2FE5FB65D8 /* World+DSL.swift */; };
-		687CA36AF9D56638B8440F71802E192E /* ReplaceMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FD052D520566632AF23B37525CCB8E /* ReplaceMe.swift */; };
 		68ECFBB3F1E40BEBA5E644516449D190 /* SuiteHooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F0BEE5B67844F0E333920C2CB3416C /* SuiteHooks.swift */; };
 		73695FA6A6CDFBB13C0CC73C2E5126C0 /* Nimble-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E9634CF58B22F95DF5AA222CDAF9B8 /* Nimble-dummy.m */; };
 		7680F08C43B965EC873D26E6AD854C9F /* BeIdenticalTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A1AA2E4CDFA7B6FD9B4F253CAF481F /* BeIdenticalTo.swift */; };
+		769C8047A7CFFF4E8EB9A3608CCDC604 /* SimpleTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0AEDCBD720129CE7E6BDCAF9FA6060 /* SimpleTransition.swift */; };
 		77128C0365A98E3BAC038A915B38791C /* BeAKindOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B53DF3C5B85F993313E9FA09386C167 /* BeAKindOf.swift */; };
 		7A6E2730A25A55D8DFA74D3D7CB005EF /* BeAnInstanceOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13064CC241598F189B1341470994F9D9 /* BeAnInstanceOf.swift */; };
 		7BFD25B1BB1116D8AC47E2C3874C5B76 /* ObjCMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B922FF75D982F502B345AE30399F97 /* ObjCMatcher.swift */; };
@@ -60,6 +59,7 @@
 		9843714ED953855FC72647161F2B1091 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E351727CD07BB90B2A3CAE2C2433F6C5 /* Foundation.framework */; };
 		9E7786C034F0E0A6B5F0A0E6BE7D7E4A /* BeEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE24AE8654BDA8234080C23F6335E26 /* BeEmpty.swift */; };
 		A3851549C64721A87EEAD8FD020066D8 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 279AA6492631DEFA8C439A9C088EEB8A /* XCTest.framework */; };
+		A50E533FED0872D634A7B6AF815B0EE3 /* SimplePresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90468F1457CB62150807FA1DD5538B0F /* SimplePresentationController.swift */; };
 		A8A1D8920818FBA37C355F3F1321AC77 /* ExampleMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38715BF4570032AE706B97AB11365E48 /* ExampleMetadata.swift */; };
 		AB54D83191861EC3390B7D28234D1F1A /* SimpleTransition-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A2E4C94E8B7DE3A8ACD5EEF7EAE634F3 /* SimpleTransition-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		ADEF11C9F5D273A731445E3CC91852DC /* DSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33DD2CC5441C4540A072B29E4A257A9D /* DSL.swift */; };
@@ -72,6 +72,7 @@
 		BB4F35062294C1A461DA3CEF6306A1DB /* HaveCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BC3268759E7DB38A0E192F06A1BD06 /* HaveCount.swift */; };
 		BB58C5E54CCA86A5FE00624B3BD604FB /* SimpleTransition.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BA56A73360BEE40A265D46AA9E1C6191 /* SimpleTransition.bundle */; };
 		BCB53F24DCADF12601B8BA90AE3190AE /* BeLessThan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69578BBC16AAA12ED9630E2036580E94 /* BeLessThan.swift */; };
+		BE4E59D71FCF61BF605D27E5988DED9C /* SimpleTransition-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 724FED64FD3B5A526FB5A302AEFE8444 /* SimpleTransition-dummy.m */; };
 		BFFF7544296C489AF80038E6E0EBCDFF /* World.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C0EAA5BA062125C64E6A819695F87C6 /* World.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C150157922BAEB1F93635508FB59E618 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E351727CD07BB90B2A3CAE2C2433F6C5 /* Foundation.framework */; };
 		C24D93ADF65680D37E3F70884B24940E /* Quick-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 616BFD5BF73AEF373E5250D05560A338 /* Quick-dummy.m */; };
@@ -82,9 +83,7 @@
 		CD9D31B6063C50689EAC2A0745C282DC /* ObjCExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FE6BD80E2769820B83F2550DAC4AAF /* ObjCExpectation.swift */; };
 		CF66238C7163FEF4641B6BE49ADEEE13 /* NSString+QCKSelectorName.m in Sources */ = {isa = PBXBuildFile; fileRef = 20ABC5A3D02301EC1EC014B6ABEFA42A /* NSString+QCKSelectorName.m */; };
 		D429691F39B4C30A8993360FB8A3E334 /* AllPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CCEF958AF4E4C4F073031905F2CE2 /* AllPass.swift */; };
-		D5C109E897171F320168AD3B29C4838B /* SimpleTransition-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 724FED64FD3B5A526FB5A302AEFE8444 /* SimpleTransition-dummy.m */; };
 		D7B45D4600C6166C124C0A926EE65284 /* Functional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E302676FFF0A4192E3ECFB4B1FDCF6 /* Functional.swift */; };
-		D8DE632E9719DFCE4C0614188AF8E2D7 /* TransformAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304460FBBE60AEF5B4814BD0F0FF0A84 /* TransformAnimator.swift */; };
 		DEE170DD3064F7343884A4016546B762 /* DSL+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDA388FEA33C5B8824432D9681B318F3 /* DSL+Wait.swift */; };
 		E2FBD93D72DF01427486D1A6853FC689 /* Expectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3116FC3DA077740D1C5702FA4C187A2 /* Expectation.swift */; };
 		E36C5201AE7F1CBB25F9D2E7CBFC3C20 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0843BD7412E439120C081E8D9FE0F80 /* Match.swift */; };
@@ -160,7 +159,6 @@
 		2B9040AB08CA7AEB727960E284F746A4 /* DSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DSL.swift; path = Nimble/DSL.swift; sourceTree = "<group>"; };
 		2EB7DD616E2205B4EEC46DDBBF306A22 /* Pods-SimpleTransition_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-SimpleTransition_Example.modulemap"; sourceTree = "<group>"; };
 		2FE24AE8654BDA8234080C23F6335E26 /* BeEmpty.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeEmpty.swift; path = Nimble/Matchers/BeEmpty.swift; sourceTree = "<group>"; };
-		304460FBBE60AEF5B4814BD0F0FF0A84 /* TransformAnimator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransformAnimator.swift; sourceTree = "<group>"; };
 		33DD2CC5441C4540A072B29E4A257A9D /* DSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DSL.swift; path = Quick/DSL/DSL.swift; sourceTree = "<group>"; };
 		3607C4A1FBBDC2EAF1787FF9677839D4 /* Pods-SimpleTransition_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SimpleTransition_Example-dummy.m"; sourceTree = "<group>"; };
 		37F32059E6E4581C4F00993FCEBC4FB2 /* SimpleTransition.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SimpleTransition.xcconfig; sourceTree = "<group>"; };
@@ -202,13 +200,14 @@
 		896C9900CC9B81E7446E17D17F9D2104 /* Pods-SimpleTransition_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SimpleTransition_Tests-resources.sh"; sourceTree = "<group>"; };
 		8DA358C8A3E95E2096C78E30E111386D /* Pods-SimpleTransition_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SimpleTransition_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		8E12C6F645E5DC0EDB23023A394F1CB1 /* BeLessThanOrEqual.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeLessThanOrEqual.swift; path = Nimble/Matchers/BeLessThanOrEqual.swift; sourceTree = "<group>"; };
+		90468F1457CB62150807FA1DD5538B0F /* SimplePresentationController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SimplePresentationController.swift; sourceTree = "<group>"; };
 		94A039912FDC46FCB2AF6DCEEB91ADB4 /* World+DSL.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "World+DSL.h"; path = "Quick/DSL/World+DSL.h"; sourceTree = "<group>"; };
 		9B33599C99BED1F331BF7FBC397141F0 /* Pods-SimpleTransition_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SimpleTransition_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		9F4080BC32C34CDDCCBE42A8A68703B7 /* Pods-SimpleTransition_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SimpleTransition_Example-resources.sh"; sourceTree = "<group>"; };
 		A2E4C94E8B7DE3A8ACD5EEF7EAE634F3 /* SimpleTransition-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SimpleTransition-umbrella.h"; sourceTree = "<group>"; };
-		A5696C630E6C2BB8284A184BC9F838B6 /* SimplePresentationController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SimplePresentationController.swift; sourceTree = "<group>"; };
 		A93E0F701C3C0E4ACE79BE196A744B4A /* Pods-SimpleTransition_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SimpleTransition_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		ACC682C2F325641938A395C084A0E5C5 /* SimpleTransitionDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SimpleTransitionDelegate.swift; sourceTree = "<group>"; };
+		AB66CB96256CB0B696FFF85346305F8B /* TransformAnimator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransformAnimator.swift; sourceTree = "<group>"; };
+		AE0AEDCBD720129CE7E6BDCAF9FA6060 /* SimpleTransition.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SimpleTransition.swift; sourceTree = "<group>"; };
 		AE670FBBCC7FBB0E81F05DA0C8EAAEE5 /* QuickConfiguration.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QuickConfiguration.m; path = Quick/Configuration/QuickConfiguration.m; sourceTree = "<group>"; };
 		AE6E3634125A20B9BA58962919B08DDC /* Closures.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Closures.swift; path = Quick/Hooks/Closures.swift; sourceTree = "<group>"; };
 		B011BCE1507648ECA7586CF7DABF6F4C /* BeLogical.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeLogical.swift; path = Nimble/Matchers/BeLogical.swift; sourceTree = "<group>"; };
@@ -222,7 +221,6 @@
 		BEA1EFFE836005E11B9D420692E9E50C /* Example.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Example.swift; path = Quick/Example.swift; sourceTree = "<group>"; };
 		BF4AE1E80CC4EA4F2E1FF17CA10A3D26 /* Nimble-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Nimble-umbrella.h"; sourceTree = "<group>"; };
 		C03BB6589A73F51F073DF050F55D7F41 /* BeGreaterThanOrEqualTo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeGreaterThanOrEqualTo.swift; path = Nimble/Matchers/BeGreaterThanOrEqualTo.swift; sourceTree = "<group>"; };
-		C4FD052D520566632AF23B37525CCB8E /* ReplaceMe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReplaceMe.swift; sourceTree = "<group>"; };
 		C7E09AE0A95ADBBB57F7C524228DF06F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C8E9634CF58B22F95DF5AA222CDAF9B8 /* Nimble-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Nimble-dummy.m"; sourceTree = "<group>"; };
 		CD6892139A4E44DF95C89A6BE52900CE /* Nimble.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Nimble.modulemap; sourceTree = "<group>"; };
@@ -338,6 +336,24 @@
 			path = "../Target Support Files/Quick";
 			sourceTree = "<group>";
 		};
+		249A63511383D9F19FE271795EEEDCBA /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				2B3C9B2E422C5DBF8302C88B9A66817C /* Classes */,
+			);
+			path = Pod;
+			sourceTree = "<group>";
+		};
+		2B3C9B2E422C5DBF8302C88B9A66817C /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				90468F1457CB62150807FA1DD5538B0F /* SimplePresentationController.swift */,
+				AE0AEDCBD720129CE7E6BDCAF9FA6060 /* SimpleTransition.swift */,
+				AB66CB96256CB0B696FFF85346305F8B /* TransformAnimator.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		36FD97F93AB8E4D454DAB2C2051EC699 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -376,7 +392,7 @@
 		547E99070C909EECF08F37B8CB214562 /* SimpleTransition */ = {
 			isa = PBXGroup;
 			children = (
-				9A59374F98A6A5D877D9C9DFB1D7BD84 /* Pod */,
+				249A63511383D9F19FE271795EEEDCBA /* Pod */,
 				697B0B02659A9F5F7B844ADCE16BCF8E /* Support Files */,
 			);
 			name = SimpleTransition;
@@ -465,25 +481,6 @@
 			);
 			name = "Pods-SimpleTransition_Example";
 			path = "Target Support Files/Pods-SimpleTransition_Example";
-			sourceTree = "<group>";
-		};
-		988912A8CACBCA5CB72CCE076CAC11ED /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				C4FD052D520566632AF23B37525CCB8E /* ReplaceMe.swift */,
-				A5696C630E6C2BB8284A184BC9F838B6 /* SimplePresentationController.swift */,
-				ACC682C2F325641938A395C084A0E5C5 /* SimpleTransitionDelegate.swift */,
-				304460FBBE60AEF5B4814BD0F0FF0A84 /* TransformAnimator.swift */,
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
-		9A59374F98A6A5D877D9C9DFB1D7BD84 /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				988912A8CACBCA5CB72CCE076CAC11ED /* Classes */,
-			);
-			path = Pod;
 			sourceTree = "<group>";
 		};
 		A047E31B9F1D1BCE53F22416948D208B /* Pods-SimpleTransition_Tests */ = {
@@ -678,7 +675,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 31341C2BF89B3AE3A9EB1D36993EB591 /* Build configuration list for PBXNativeTarget "SimpleTransition" */;
 			buildPhases = (
-				2510E6120BEEBB4AB34B1376F3CAC3E8 /* Sources */,
+				24B1F56A652102224B4D97BFCAB88053 /* Sources */,
 				6A39F7C02AA11C08296DA9C0DC04A333 /* Frameworks */,
 				862FFD4BFD6CB3DBB7B2A5554B770F11 /* Resources */,
 				5D546CFDD232510FC72ECFDAA81762AC /* Headers */,
@@ -734,7 +731,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0720;
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -784,15 +781,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2510E6120BEEBB4AB34B1376F3CAC3E8 /* Sources */ = {
+		24B1F56A652102224B4D97BFCAB88053 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				687CA36AF9D56638B8440F71802E192E /* ReplaceMe.swift in Sources */,
-				122D6FC8E118B3F72EAEA08916C1AE5D /* SimplePresentationController.swift in Sources */,
-				D5C109E897171F320168AD3B29C4838B /* SimpleTransition-dummy.m in Sources */,
-				0809E012509BE17948A07475CEE1269C /* SimpleTransitionDelegate.swift in Sources */,
-				D8DE632E9719DFCE4C0614188AF8E2D7 /* TransformAnimator.swift in Sources */,
+				A50E533FED0872D634A7B6AF815B0EE3 /* SimplePresentationController.swift in Sources */,
+				BE4E59D71FCF61BF605D27E5988DED9C /* SimpleTransition-dummy.m in Sources */,
+				769C8047A7CFFF4E8EB9A3608CCDC604 /* SimpleTransition.swift in Sources */,
+				161032E5E5ABFB2D7D0AEC3471655F3B /* TransformAnimator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -941,6 +937,7 @@
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Pods_SimpleTransition_Example;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -968,6 +965,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/Quick/Quick.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Quick;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1030,6 +1028,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/SimpleTransition/SimpleTransition.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = SimpleTransition;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1061,6 +1060,7 @@
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Pods_SimpleTransition_Tests;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1088,6 +1088,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/Nimble/Nimble.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Nimble;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1119,6 +1120,7 @@
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Pods_SimpleTransition_Tests;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1147,6 +1149,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/Nimble/Nimble.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Nimble;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1174,6 +1177,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1213,6 +1217,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/Quick/Quick.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Quick;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1264,6 +1269,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/SimpleTransition/SimpleTransition.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = SimpleTransition;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1294,6 +1300,7 @@
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = Pods_SimpleTransition_Example;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;

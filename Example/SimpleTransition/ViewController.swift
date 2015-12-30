@@ -8,8 +8,7 @@
 
 
 import UIKit
-
-import SimpleTransitionDelegate
+import SimpleTransition
 
 class ViewController: UIViewController {
     
@@ -67,56 +66,56 @@ class ViewController: UIViewController {
     }
     
     @IBAction func present(sender: AnyObject) {
-        
+
         let presentedViewCtl: PresentedViewController! = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("PresentedViewController") as! PresentedViewController
         
-        let swiftTransitionObject: SimpleTransitionDelegate = SimpleTransitionDelegate(presentingViewController: self, presentedViewController: presentedViewCtl)
+        let simpleTransitionDelegate: SimpleTransition = SimpleTransition(presentingViewController: self, presentedViewController: presentedViewCtl)
         
         if animationTypeSegment.selectedSegmentIndex == 0 {
-            swiftTransitionObject.animation = .Dissolve
+            simpleTransitionDelegate.animation = .Dissolve
         }
         else {
             switch transitionDirectionSegment.selectedSegmentIndex {
             case 0:
-                swiftTransitionObject.animation = .LeftEdge
+                simpleTransitionDelegate.animation = .LeftEdge
                 break
             case 1:
-                swiftTransitionObject.animation = .RightEdge
+                simpleTransitionDelegate.animation = .RightEdge
                 break
             case 2:
-                swiftTransitionObject.animation = .TopEdge
+                simpleTransitionDelegate.animation = .TopEdge
                 break
             case 3:
-                swiftTransitionObject.animation = .BottomEdge
+                simpleTransitionDelegate.animation = .BottomEdge
                 break
             default:
                 break
             }
             
             if animatedMotionSegment.selectedSegmentIndex == 0 {
-                swiftTransitionObject.animatedMotionOption = .EaseInOut
+                simpleTransitionDelegate.animatedMotionOption = .EaseInOut
             }
             else {
-                swiftTransitionObject.animatedMotionOption = .Spring
+                simpleTransitionDelegate.animatedMotionOption = .Spring
             }
         }
         
         if presentingViewSizeSegment.selectedSegmentIndex == 0 {
-            swiftTransitionObject.presentingViewSizeOption = .KeepSize
+            simpleTransitionDelegate.presentingViewSizeOption = .KeepSize
         }
         else {
-            swiftTransitionObject.presentingViewSizeOption = .Shrink
+            simpleTransitionDelegate.presentingViewSizeOption = .Shrink
         }
         
         if sizeSegment.selectedSegmentIndex == 0 {
-            swiftTransitionObject.presentedViewSize = CGSizeMake(SimpleTransitionDelegate.flexibleDimension, SimpleTransitionDelegate.flexibleDimension)
+            simpleTransitionDelegate.presentedViewSize = CGSizeMake(SimpleTransition.flexibleDimension, SimpleTransition.flexibleDimension)
         }
         else {
-            swiftTransitionObject.presentedViewSize = CGSizeMake(SimpleTransitionDelegate.flexibleDimension, 300)
+            simpleTransitionDelegate.presentedViewSize = CGSizeMake(SimpleTransition.flexibleDimension, 300)
         }
         
-        swiftTransitionObject.animationDuration = 0.6
-        presentedViewCtl.simpleTransitionDelegate = swiftTransitionObject
+        simpleTransitionDelegate.animationDuration = 0.6
+        presentedViewCtl.simpleTransitionDelegate = simpleTransitionDelegate
         
         self.presentViewController(presentedViewCtl, animated: true, completion: nil)
 
