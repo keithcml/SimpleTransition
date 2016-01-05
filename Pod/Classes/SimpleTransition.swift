@@ -9,14 +9,14 @@
 import Foundation
 import UIKit
 
-extension UIViewController {
+public extension UIViewController {
     private struct AssociatedKeys {
-        static var simpleTransitionDelegate: SimpleTransitionDelegate?
+        static var simpleTransitionDelegate: SimpleTransition?
     }
     
-    var simpleTransitionDelegate: SimpleTransitionDelegate? {
+    var simpleTransitionDelegate: SimpleTransition? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.simpleTransitionDelegate) as? SimpleTransitionDelegate
+            return objc_getAssociatedObject(self, &AssociatedKeys.simpleTransitionDelegate) as? SimpleTransition
         }
         
         set {
@@ -24,7 +24,7 @@ extension UIViewController {
                 objc_setAssociatedObject(
                     self,
                     &AssociatedKeys.simpleTransitionDelegate,
-                    newValue as SimpleTransitionDelegate?,
+                    newValue as SimpleTransition?,
                     .OBJC_ASSOCIATION_RETAIN_NONATOMIC
                 )
             }
@@ -69,7 +69,8 @@ extension UIViewController {
             
             if didAddMethod {
                 class_replaceMethod(self, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
-            } else {
+            }
+            else {
                 method_exchangeImplementations(originalMethod, swizzledMethod)
             }
         }
@@ -101,13 +102,13 @@ extension UIViewController {
     }
     
     func stm_dismissViewControllerAnimated(flag: Bool, completion: (() -> Void)?) {
-
+        
         if self.presentedViewController != nil && self.presentedViewController!.isKindOfClass(UIAlertController) {
             self.stm_dismissViewControllerAnimated(flag, completion: completion)
             return
         }
         
-        if self.simpleTransitionDelegate != nil && self.simpleTransitionDelegate!.isKindOfClass(SimpleTransitionDelegate) {
+        if self.simpleTransitionDelegate != nil && self.simpleTransitionDelegate!.isKindOfClass(SimpleTransition) {
             // things to do ...
             self.stm_dismissViewControllerAnimated(flag, completion: completion)
         }
@@ -117,12 +118,12 @@ extension UIViewController {
     }
 }
 
-enum TransitionPresentingViewSizeOptions {
+public enum TransitionPresentingViewSizeOptions {
     case KeepSize
     case Shrink
 }
 
-enum TransitionPresentedViewAlignment {
+public enum TransitionPresentedViewAlignment {
     case TopLeft
     case TopCenter
     case TopRight
@@ -134,12 +135,12 @@ enum TransitionPresentedViewAlignment {
     case BottomRight
 }
 
-enum TransitionAnimatedMotionOptions {
+public enum TransitionAnimatedMotionOptions {
     case EaseInOut
     case Spring
 }
 
-enum TransitionAnimation {
+public enum TransitionAnimation {
     case Custom
     case Dissolve
     
@@ -150,24 +151,24 @@ enum TransitionAnimation {
 }
 
 
-class SimpleTransitionDelegate: NSObject {
+public class SimpleTransition: NSObject {
     
-    static let flexibleDimension: CGFloat = 0.0
+    public static let flexibleDimension: CGFloat = 0.0
 
     private(set) weak var stm_presentingViewController: UIViewController!
     private(set) weak var stm_presentedViewController: UIViewController!
-    private(set) var fadingEnabled: Bool = false
+    private(set) var fadingEnabled = false
     
-    var animationDuration: CGFloat = 0.4
-    var dismissViaChromeView: Bool = true
+    public var animationDuration: CGFloat = 0.4
+    public var dismissViaChromeView = true
     
-    var keepPresentingViewOrientation = false
+    public var keepPresentingViewOrientation = false
     
-    var presentingViewSizeOption: TransitionPresentingViewSizeOptions = .KeepSize
-    var presentedViewAlignment: TransitionPresentedViewAlignment = .BottomCenter
-    var animatedMotionOption: TransitionAnimatedMotionOptions = .EaseInOut
+    public var presentingViewSizeOption: TransitionPresentingViewSizeOptions = .KeepSize
+    public var presentedViewAlignment: TransitionPresentedViewAlignment = .BottomCenter
+    public var animatedMotionOption: TransitionAnimatedMotionOptions = .EaseInOut
     
-    var animation: TransitionAnimation = .BottomEdge  {
+    public var animation: TransitionAnimation = .BottomEdge  {
         willSet {
             switch newValue as TransitionAnimation {
             case .LeftEdge:
@@ -194,35 +195,34 @@ class SimpleTransitionDelegate: NSObject {
     }
     
     // custom presented view size
-    var presentedViewSize: CGSize = CGSizeMake(flexibleDimension, flexibleDimension)
+    public var presentedViewSize = CGSize(width: flexibleDimension, height: flexibleDimension)
     
     // animated motion attributes
-    var initialSpringVelocity: CGFloat = 5
-    var springDamping: CGFloat = 0.8
+    public var initialSpringVelocity: CGFloat = 5
+    public var springDamping: CGFloat = 0.8
     
     // animators
-    var customPresentedAnimator: NSObject? {
+    public var customPresentedAnimator: NSObject? {
         willSet {
-            if newValue != nil {
-                if !newValue!.conformsToProtocol(UIViewControllerAnimatedTransitioning) {
-                    assert(!newValue!.conformsToProtocol(UIViewControllerAnimatedTransitioning), "customPresentedAnimator does not conform to UIViewControllerAnimatedTransitioning")
-                }
+            if let newValue = newValue
+                where newValue is UIViewControllerAnimatedTransitioning {
+                assert(!(newValue is UIViewControllerAnimatedTransitioning), "customPresentedAnimator does not conform to UIViewControllerAnimatedTransitioning")
             }
         }
     }
-    var customDismissalAnimator: NSObject? {
+    public var customDismissalAnimator: NSObject? {
         willSet {
-            if newValue != nil {
-                if !newValue!.conformsToProtocol(UIViewControllerAnimatedTransitioning) {
-                    assert(!newValue!.conformsToProtocol(UIViewControllerAnimatedTransitioning), "customDismissalAnimator does not conform to UIViewControllerAnimatedTransitioning")
-                }
+            if let newValue = newValue
+                where newValue is UIViewControllerAnimatedTransitioning {
+                    assert(!(newValue is UIViewControllerAnimatedTransitioning), "customDismissalAnimator does not conform to UIViewControllerAnimatedTransitioning")
             }
         }
     }
+
     private(set) var animator: NSObject?
     
     
-    init(presentingViewController: UIViewController!, presentedViewController: UIViewController!) {
+    public init(presentingViewController: UIViewController!, presentedViewController: UIViewController!) {
         
         assert(presentingViewController != nil, "no presentingViewController")
         assert(presentedViewController != nil, "no presentedViewController")
@@ -230,27 +230,22 @@ class SimpleTransitionDelegate: NSObject {
         stm_presentingViewController = presentingViewController
         stm_presentedViewController = presentedViewController
     }
-    
-    func prepareToPresent() {
-        stm_presentedViewController.transitioningDelegate = self;
-    }
 }
 
 // MARK: - UIViewControllerTransitioningDelegate
-extension SimpleTransitionDelegate: UIViewControllerTransitioningDelegate {
-    func animationControllerForPresentedController(presented: UIViewController,
+extension SimpleTransition: UIViewControllerTransitioningDelegate {
+    public func animationControllerForPresentedController(presented: UIViewController,
         presentingController presenting: UIViewController,
         sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
             switch animation {
             case .Custom:
-                if customPresentedAnimator != nil {
-                    if customPresentedAnimator!.conformsToProtocol(UIViewControllerAnimatedTransitioning) {
-                        return customPresentedAnimator as? UIViewControllerAnimatedTransitioning
-                    }
+                if let customPresentedAnimator = customPresentedAnimator
+                    where customPresentedAnimator is UIViewControllerAnimatedTransitioning {
+                    return customPresentedAnimator as? UIViewControllerAnimatedTransitioning
                 }
                 return nil
             case .Dissolve, .LeftEdge, .RightEdge, .TopEdge, .BottomEdge:
-                let t_animator: TransformAnimator! = TransformAnimator()
+                let t_animator = TransformAnimator()
                 t_animator.presenting = true
                 t_animator.transitionDelegate = self
                 animator = t_animator
@@ -258,24 +253,30 @@ extension SimpleTransitionDelegate: UIViewControllerTransitioningDelegate {
             }
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         switch animation {
         case .Custom:
-            if customDismissalAnimator != nil {
-                if customDismissalAnimator!.conformsToProtocol(UIViewControllerAnimatedTransitioning) {
-                    return customDismissalAnimator as? UIViewControllerAnimatedTransitioning
-                }
+            if let customDismissalAnimator = customDismissalAnimator
+                where customDismissalAnimator is UIViewControllerAnimatedTransitioning {
+                return customDismissalAnimator as? UIViewControllerAnimatedTransitioning
             }
             return nil
         case .Dissolve, .LeftEdge, .RightEdge, .TopEdge, .BottomEdge:
-            let t_animator: TransformAnimator! = animator as! TransformAnimator
-            t_animator.presenting = false
-            return t_animator
+            guard let t_animator = animator else {
+                return nil
+            }
+            
+            guard let unwrappedAnimator = t_animator as? TransformAnimator else {
+                return nil
+            }
+            
+            unwrappedAnimator.presenting = false
+            return unwrappedAnimator
         }
     }
     
-    func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController, sourceViewController source: UIViewController) -> UIPresentationController? {
-        let presentationController: SimplePresentationController = SimplePresentationController(presentedViewController: presented, presentingViewController:presenting)
+    public func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController, sourceViewController source: UIViewController) -> UIPresentationController? {
+        let presentationController = SimplePresentationController(presentedViewController: presented, presentingViewController:presenting)
         presentationController.presentedViewAlignment = presentedViewAlignment
         presentationController.dismissViaChromeView = dismissViaChromeView
         presentationController.presentedViewSize = presentedViewSize

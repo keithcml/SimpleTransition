@@ -12,8 +12,8 @@ import UIKit
 class TransformAnimator: NSObject {
     
     var duration: NSTimeInterval = 0.4
-    var presenting: Bool = true
-    weak var transitionDelegate: SimpleTransitionDelegate?
+    var presenting = true
+    weak var transitionDelegate: SimpleTransition?
 
 }
 
@@ -25,23 +25,30 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
         
-        assert(transitionDelegate != nil, "fatal error: no transition manager, please file as a bug")
+        guard let transitionDelegate = transitionDelegate else {
+            assert(1 != 1, "fatal error: no transition manager, please file as a bug")
+            return
+        }
         
-        let spring: Bool = transitionDelegate!.animatedMotionOption == .Spring
+        let spring = transitionDelegate.animatedMotionOption == .Spring
         
-        let fading: Bool = transitionDelegate!.fadingEnabled
+        let fading = transitionDelegate.fadingEnabled
         
-        let presentingViewSizeOption: TransitionPresentingViewSizeOptions = transitionDelegate!.presentingViewSizeOption
-        let presentedViewAlignment: TransitionPresentedViewAlignment = transitionDelegate!.presentedViewAlignment
-        let animation: TransitionAnimation = transitionDelegate!.animation
-        let initialSpringVelocity: CGFloat = transitionDelegate!.initialSpringVelocity
-        let springDamping: CGFloat = transitionDelegate!.springDamping
+        let presentingViewSizeOption = transitionDelegate.presentingViewSizeOption
+        let presentedViewAlignment = transitionDelegate.presentedViewAlignment
+        let animation = transitionDelegate.animation
+        let initialSpringVelocity = transitionDelegate.initialSpringVelocity
+        let springDamping = transitionDelegate.springDamping
         
-        let presentedViewSize: CGSize = transitionDelegate!.presentedViewSize
+        let presentedViewSize = transitionDelegate.presentedViewSize
         
         let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey)
         let toView = transitionContext.viewForKey(UITransitionContextToViewKey)
-        let containerView: UIView! = transitionContext.containerView()
+        
+        guard let containerView = transitionContext.containerView() else {
+            return
+        }
+        //let containerView: UIView! = transitionContext.containerView()
         
         var presentingView: UIView?
         var presentedView: UIView!
@@ -69,14 +76,14 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
             var width: CGFloat = 0.0
             var height: CGFloat = 0.0
             
-            if presentedViewSize.width == SimpleTransitionDelegate.flexibleDimension {
+            if presentedViewSize.width == SimpleTransition.flexibleDimension {
                 width = CGRectGetWidth(presentedView.bounds)
             }
             else {
                 width = presentedViewSize.width
             }
             
-            if presentedViewSize.height == SimpleTransitionDelegate.flexibleDimension {
+            if presentedViewSize.height == SimpleTransition.flexibleDimension {
                 height = CGRectGetHeight(presentedView.bounds)
             }
             else {
@@ -89,36 +96,36 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
             case .TopLeft:
                 break
             case .TopCenter:
-                presentedView.center = CGPointMake(CGRectGetMidX(containerView!.bounds),
-                    CGRectGetMidY(presentedView.bounds))
+                presentedView.center = CGPoint(x: CGRectGetMidX(containerView.bounds),
+                                               y: CGRectGetMidY(presentedView.bounds))
                 break
             case .TopRight:
-                presentedView.center = CGPointMake(CGRectGetMidX(containerView!.bounds),
-                    CGRectGetMidY(presentedView.bounds))
+                presentedView.center = CGPoint(x: CGRectGetMidX(containerView.bounds),
+                                               y: CGRectGetMidY(presentedView.bounds))
                 break
             case .CenterLeft:
-                presentedView.center = CGPointMake(CGRectGetMidX(presentedView.bounds),
-                    CGRectGetMidY(containerView.bounds))
+                presentedView.center = CGPoint(x: CGRectGetMidX(presentedView.bounds),
+                                               y: CGRectGetMidY(containerView.bounds))
                 break
             case .CenterCenter:
-                presentedView.center = CGPointMake(CGRectGetMidX(containerView.bounds),
-                    CGRectGetMidY(containerView.bounds))
+                presentedView.center = CGPoint(x: CGRectGetMidX(containerView.bounds),
+                                               y: CGRectGetMidY(containerView.bounds))
                 break
             case .CenterRight:
-                presentedView.center = CGPointMake(CGRectGetWidth(containerView.bounds) - CGRectGetWidth(presentedView.bounds)/2,
-                    CGRectGetMidY(containerView.bounds))
+                presentedView.center = CGPoint(x: CGRectGetWidth(containerView.bounds) - CGRectGetWidth(presentedView.bounds)/2,
+                                               y: CGRectGetMidY(containerView.bounds))
                 break
             case .BottomLeft:
-                presentedView.center = CGPointMake(CGRectGetMidX(presentedView.bounds),
-                    CGRectGetHeight(containerView.bounds) - CGRectGetHeight(presentedView.bounds)/2)
+                presentedView.center = CGPoint(x: CGRectGetMidX(presentedView.bounds),
+                                               y: CGRectGetHeight(containerView.bounds) - CGRectGetHeight(presentedView.bounds)/2)
                 break
             case .BottomCenter:
-                presentedView.center = CGPointMake(CGRectGetMidX(containerView.bounds),
-                    CGRectGetHeight(containerView.bounds) - CGRectGetHeight(presentedView.bounds)/2)
+                presentedView.center = CGPoint(x: CGRectGetMidX(containerView.bounds),
+                                               y: CGRectGetHeight(containerView.bounds) - CGRectGetHeight(presentedView.bounds)/2)
                 break
             case .BottomRight:
-                presentedView.center = CGPointMake(CGRectGetWidth(containerView.bounds) - CGRectGetWidth(presentedView.bounds)/2,
-                    CGRectGetHeight(containerView.bounds) - CGRectGetHeight(presentedView.bounds)/2)
+                presentedView.center = CGPoint(x: CGRectGetWidth(containerView.bounds) - CGRectGetWidth(presentedView.bounds)/2,
+                                               y: CGRectGetHeight(containerView.bounds) - CGRectGetHeight(presentedView.bounds)/2)
                 break
             }
             
@@ -164,7 +171,7 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
         else {
             
             if presentingView != nil {
-                containerView!.insertSubview(presentingView!, atIndex: 0)
+                containerView.insertSubview(presentingView!, atIndex: 0)
             }
             
             var dismissTransform: CGAffineTransform = CGAffineTransformIdentity

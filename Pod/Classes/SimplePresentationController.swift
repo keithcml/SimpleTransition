@@ -14,7 +14,7 @@ class SimplePresentationController: UIPresentationController {
     // default value
     var keepPresentingViewOrientation = false
     var presentedViewAlignment: TransitionPresentedViewAlignment = .CenterCenter
-    var dismissViaChromeView: Bool = false {
+    var dismissViaChromeView = false {
         willSet {
             if (newValue) {
                 addTapOnChromeView();
@@ -24,11 +24,11 @@ class SimplePresentationController: UIPresentationController {
             }
         }
     }
-    var presentedViewSize: CGSize = CGSizeMake(SimpleTransitionDelegate.flexibleDimension, SimpleTransitionDelegate.flexibleDimension)
+    var presentedViewSize = CGSize(width: SimpleTransition.flexibleDimension, height: SimpleTransition.flexibleDimension)
     
-    let chromeView: UIView! = UIView()
+    let chromeView = UIView()
     
-    private var boundsOfPresentedViewInContainerView: CGRect! = CGRectMake(0, 0, 0, 0)
+    private var boundsOfPresentedViewInContainerView: CGRect! = CGRect(origin: CGPointZero, size: CGSizeZero)
     
     lazy var tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("tap:"))
     
@@ -58,42 +58,39 @@ class SimplePresentationController: UIPresentationController {
     // MARK: override func
     override func frameOfPresentedViewInContainerView() -> CGRect {
         
-        var frame: CGRect! = boundsOfPresentedViewInContainerView
+        var frame = boundsOfPresentedViewInContainerView
         
         switch presentedViewAlignment {
         case .TopLeft:
             break;
         case .TopCenter:
-            frame.origin = CGPointMake(CGRectGetMidX(containerView!.bounds) - CGRectGetWidth(boundsOfPresentedViewInContainerView!)/2,
-                CGRectGetMinY(boundsOfPresentedViewInContainerView!))
+            frame.origin = CGPoint(x: CGRectGetMidX(containerView!.bounds) - CGRectGetWidth(frame)/2, y: CGRectGetMinY(frame))
             break
         case .TopRight:
-            frame.origin = CGPointMake(CGRectGetWidth(containerView!.bounds) - CGRectGetWidth(boundsOfPresentedViewInContainerView!),
-                CGRectGetMinY(boundsOfPresentedViewInContainerView!))
+            frame.origin = CGPoint(x: CGRectGetWidth(containerView!.bounds) - CGRectGetWidth(frame), y: CGRectGetMinY(frame))
             break
         case .CenterLeft:
-            frame.origin = CGPointMake(CGRectGetMinX(boundsOfPresentedViewInContainerView!),
-                CGRectGetMidY(containerView!.bounds) - CGRectGetHeight(boundsOfPresentedViewInContainerView!)/2)
+            frame.origin = CGPoint(x: CGRectGetMinX(frame), y: CGRectGetMidY(containerView!.bounds) - CGRectGetHeight(frame)/2)
             break
         case .CenterCenter:
-            frame.origin = CGPointMake(CGRectGetMidX(containerView!.bounds) - CGRectGetWidth(boundsOfPresentedViewInContainerView!)/2,
-                CGRectGetMidY(containerView!.bounds) - CGRectGetHeight(boundsOfPresentedViewInContainerView!)/2)
+            frame.origin = CGPoint(x: CGRectGetMidX(containerView!.bounds) - CGRectGetWidth(frame)/2,
+                y: CGRectGetMidY(containerView!.bounds) - CGRectGetHeight(frame)/2)
             break
         case .CenterRight:
-            frame.origin = CGPointMake(CGRectGetWidth(containerView!.bounds) - CGRectGetWidth(boundsOfPresentedViewInContainerView!),
-                CGRectGetMidY(containerView!.bounds) - CGRectGetHeight(boundsOfPresentedViewInContainerView!)/2)
+            frame.origin = CGPoint(x: CGRectGetWidth(containerView!.bounds) - CGRectGetWidth(frame),
+                y: CGRectGetMidY(containerView!.bounds) - CGRectGetHeight(frame)/2)
             break
         case .BottomLeft:
-            frame.origin = CGPointMake(CGRectGetMinX(boundsOfPresentedViewInContainerView!),
-                CGRectGetHeight(containerView!.bounds) - CGRectGetHeight(boundsOfPresentedViewInContainerView!))
+            frame.origin = CGPoint(x: CGRectGetMinX(frame),
+                y: CGRectGetHeight(containerView!.bounds) - CGRectGetHeight(frame))
             break
         case .BottomCenter:
-            frame.origin = CGPointMake(CGRectGetMidX(containerView!.bounds) - CGRectGetWidth(boundsOfPresentedViewInContainerView!)/2,
-                CGRectGetHeight(containerView!.bounds) - CGRectGetHeight(boundsOfPresentedViewInContainerView!))
+            frame.origin = CGPoint(x: CGRectGetMidX(containerView!.bounds) - CGRectGetWidth(frame)/2,
+                y: CGRectGetHeight(containerView!.bounds) - CGRectGetHeight(frame))
             break
         case .BottomRight:
-            frame.origin = CGPointMake(CGRectGetWidth(containerView!.bounds) - CGRectGetWidth(boundsOfPresentedViewInContainerView!),
-                CGRectGetHeight(containerView!.bounds) - CGRectGetHeight(boundsOfPresentedViewInContainerView!))
+            frame.origin = CGPoint(x: CGRectGetWidth(containerView!.bounds) - CGRectGetWidth(frame),
+                y: CGRectGetHeight(containerView!.bounds) - CGRectGetHeight(frame))
             break
         }
         
@@ -101,28 +98,41 @@ class SimplePresentationController: UIPresentationController {
     }
     
     override func containerViewWillLayoutSubviews() {
-        chromeView.frame = containerView!.bounds;
         
-        if (!CGSizeEqualToSize(CGSizeMake(SimpleTransitionDelegate.flexibleDimension, SimpleTransitionDelegate.flexibleDimension), self.presentedViewSize)) {
+        guard let containerView = containerView else {
+            return
+        }
+        
+        guard let presentedView = presentedView() else {
+            return
+        }
+        
+        chromeView.frame = containerView.bounds;
+        
+        if (!CGSizeEqualToSize(CGSize(width: SimpleTransition.flexibleDimension, height: SimpleTransition.flexibleDimension), presentedViewSize)) {
             
-            let width: CGFloat = presentedViewSize.width == SimpleTransitionDelegate.flexibleDimension ? CGRectGetWidth(containerView!.bounds) : presentedViewSize.width
-            let height: CGFloat = presentedViewSize.height == SimpleTransitionDelegate.flexibleDimension ? CGRectGetHeight(containerView!.bounds)
+            let width = presentedViewSize.width == SimpleTransition.flexibleDimension ? CGRectGetWidth(containerView.bounds) : presentedViewSize.width
+            let height = presentedViewSize.height == SimpleTransition.flexibleDimension ? CGRectGetHeight(containerView.bounds)
                 : presentedViewSize.height
             
-            boundsOfPresentedViewInContainerView! = CGRectMake(0, 0, width, height)
+            boundsOfPresentedViewInContainerView = CGRect(x: 0, y: 0, width: width, height: height)
         }
         else {
-            boundsOfPresentedViewInContainerView = containerView!.bounds
+            boundsOfPresentedViewInContainerView = containerView.bounds
         }
         
-        self.presentedView()!.frame = self.frameOfPresentedViewInContainerView()
+        presentedView.frame = frameOfPresentedViewInContainerView()
     }
     
     override func presentationTransitionWillBegin() {
         
-        chromeView.frame = containerView!.bounds;
+        guard let containerView = containerView else {
+            return
+        }
+        
+        chromeView.frame = containerView.bounds;
         chromeView.alpha = 0.0;
-        containerView!.insertSubview(chromeView, atIndex:0);
+        containerView.insertSubview(chromeView, atIndex:0);
         
         let coordinator = presentedViewController.transitionCoordinator()
         
@@ -186,11 +196,6 @@ class SimplePresentationController: UIPresentationController {
     override func adaptivePresentationStyleForTraitCollection(traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .FullScreen
     }
-    
-    
-    
-    
-    
     
 }
 
