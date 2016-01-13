@@ -48,8 +48,7 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
         guard let containerView = transitionContext.containerView() else {
             return
         }
-        //let containerView: UIView! = transitionContext.containerView()
-        
+
         var presentingView: UIView?
         var presentedView: UIView!
         
@@ -205,6 +204,7 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
                 case .Shrink:
                     if let presentingViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) {
                         presentingViewController.view.transform = CGAffineTransformIdentity
+                        presentingViewController.view.frame = containerView.frame
                     }
                     break
                 default:
