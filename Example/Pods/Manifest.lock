@@ -1,7 +1,7 @@
 PODS:
   - Nimble (3.0.0)
   - Quick (0.8.0)
-  - SimpleTransition (0.1.0)
+  - SimpleTransition (1.0.0)
 
 DEPENDENCIES:
   - Nimble (= 3.0.0)
@@ -15,6 +15,6 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
   Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
-  SimpleTransition: 5c72c7b599355aad351d2722f9b4d1b21ff56563
+  SimpleTransition: c6342c8364dad2a8353188b72c22082421496733
 
 COCOAPODS: 0.39.0

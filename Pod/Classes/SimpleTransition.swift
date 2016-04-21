@@ -43,8 +43,8 @@ public extension UIViewController {
         }
         
         dispatch_once(&Static.token_present) {
-            let originalSelector = Selector("presentViewController:animated:completion:")
-            let swizzledSelector = Selector("stm_presentViewController:animated:completion:")
+            let originalSelector = #selector(UIViewController.presentViewController(_:animated:completion:))
+            let swizzledSelector = #selector(UIViewController.stm_presentViewController(_:animated:completion:))
             
             let originalMethod = class_getInstanceMethod(self, originalSelector)
             let swizzledMethod = class_getInstanceMethod(self, swizzledSelector)
@@ -59,8 +59,8 @@ public extension UIViewController {
         }
         
         dispatch_once(&Static.token_dismiss) {
-            let originalSelector = Selector("dismissViewControllerAnimated:completion:")
-            let swizzledSelector = Selector("stm_dismissViewControllerAnimated:completion:")
+            let originalSelector = #selector(UIViewController.dismissViewControllerAnimated(_:completion:))
+            let swizzledSelector = #selector(UIViewController.stm_dismissViewControllerAnimated(_:completion:))
             
             let originalMethod = class_getInstanceMethod(self, originalSelector)
             let swizzledMethod = class_getInstanceMethod(self, swizzledSelector)
@@ -155,8 +155,8 @@ public class SimpleTransition: NSObject {
     
     public static let flexibleDimension: CGFloat = 0.0
 
-    private(set) weak var stm_presentingViewController: UIViewController!
-    private(set) weak var stm_presentedViewController: UIViewController!
+    private(set) weak var stm_presentingViewController: UIViewController?
+    private(set) weak var stm_presentedViewController: UIViewController?
     private(set) var fadingEnabled = false
     
     public var animationDuration: CGFloat = 0.4
