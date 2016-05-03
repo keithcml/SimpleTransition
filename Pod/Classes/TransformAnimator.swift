@@ -1,10 +1,24 @@
-//
 //  TransformAnimator.swift
-//  Example
 //
-//  Created by Mingloan Chan on 28/12/2015.
+//  Copyright (c) 2016, Mingloan, Keith Chan.
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
 //
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 import Foundation
 import UIKit
@@ -30,17 +44,27 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
             return
         }
         
-        let spring = transitionDelegate.animatedMotionOption == .Spring
-        
-        let fading = transitionDelegate.fadingEnabled
-        
         let presentingViewSizeOption = transitionDelegate.presentingViewSizeOption
         let presentedViewAlignment = transitionDelegate.presentedViewAlignment
         let animation = transitionDelegate.animation
-        let initialSpringVelocity = transitionDelegate.initialSpringVelocity
-        let springDamping = transitionDelegate.springDamping
         
-        let presentedViewSize = transitionDelegate.presentedViewSize
+        var presentedViewSize = SimpleTransition.FlexibleSize
+        switch animation {
+        case .LeftEdge(let size):
+            presentedViewSize = size
+            break
+        case .RightEdge(let size):
+            presentedViewSize = size
+            break
+        case .TopEdge(let size):
+            presentedViewSize = size
+            break
+        case .BottomEdge(let size):
+            presentedViewSize = size
+            break
+        default:
+            break
+        }
         
         let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey)
         let toView = transitionContext.viewForKey(UITransitionContextToViewKey)
@@ -75,14 +99,14 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
             var width: CGFloat = 0.0
             var height: CGFloat = 0.0
             
-            if presentedViewSize.width == SimpleTransition.flexibleDimension {
+            if presentedViewSize.width == SimpleTransition.FlexibleDimension {
                 width = CGRectGetWidth(presentedView.bounds)
             }
             else {
                 width = presentedViewSize.width
             }
             
-            if presentedViewSize.height == SimpleTransition.flexibleDimension {
+            if presentedViewSize.height == SimpleTransition.FlexibleDimension {
                 height = CGRectGetHeight(presentedView.bounds)
             }
             else {
@@ -141,25 +165,28 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
             case .BottomEdge:
                 presentedView.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(containerView.bounds) - CGRectGetMinY(presentedView.bounds))
                 break
+            case .Dissolve:
+                presentedView.alpha = 0.0
+                break
             default:
                 break
             }
-            
-            if fading {
-                presentedView.alpha = 0.0
-            }
-            
+
             animationBlock = {
                 
                 presentedView.transform = CGAffineTransformIdentity
-                if fading {
+                switch animation {
+                case .Dissolve:
                     presentedView.alpha = 1.0
+                    break
+                default:
+                    break
                 }
                 
                 switch presentingViewSizeOption {
-                case .Shrink:
+                case .Scale(let scale):
                     if let presentingViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) {
-                        presentingViewController.view.transform = CGAffineTransformMakeScale(0.95, 0.95)
+                        presentingViewController.view.transform = CGAffineTransformMakeScale(scale, scale)
                     }
                     break
                 default:
@@ -196,12 +223,16 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
                 
                 presentedView.transform = dismissTransform
                 
-                if fading {
+                switch animation {
+                case .Dissolve:
                     presentedView.alpha = 0.0
+                    break
+                default:
+                    break
                 }
                 
                 switch presentingViewSizeOption {
-                case .Shrink:
+                case .Scale:
                     if let presentingViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) {
                         presentingViewController.view.transform = CGAffineTransformIdentity
                         presentingViewController.view.frame = containerView.frame
@@ -217,23 +248,25 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
         }
         
-        if spring {
+        switch transitionDelegate.animatedMotionOption {
+        case let .Spring(duration, velocity, damping):
             UIView.animateWithDuration(
-                duration * 1.5,
+                duration,
                 delay: 0.0,
-                usingSpringWithDamping: springDamping,
-                initialSpringVelocity: initialSpringVelocity,
+                usingSpringWithDamping: damping,
+                initialSpringVelocity: velocity,
                 options: [],
                 animations: animationBlock,
                 completion: completion)
-        }
-        else {
+            break
+        case let .EaseInOut(duration):
             UIView.animateWithDuration(
                 duration,
                 delay: 0.0,
                 options: .CurveEaseInOut,
                 animations: animationBlock,
                 completion: completion)
+            break
         }
     }
     

@@ -46,22 +46,24 @@ class ViewController: UIViewController {
             animatedMotionSegment.hidden = true
             transitionDirectionLabel.hidden = true
             transitionDirectionSegment.hidden = true
-            
+            /*
             horizontalAlignmentLabel.hidden = false
             horizontalAlignmentSegment.hidden = false
             verticleAlignmentLabel.hidden = false
             verticleAlignmentSegment.hidden = false
+            */
         }
         else {
             animatedMotionLabel.hidden = false
             animatedMotionSegment.hidden = false
             transitionDirectionLabel.hidden = false
             transitionDirectionSegment.hidden = false
-            
+            /*
             horizontalAlignmentLabel.hidden = true
             horizontalAlignmentSegment.hidden = true
             verticleAlignmentLabel.hidden = true
             verticleAlignmentSegment.hidden = true
+            */
         }
     }
     
@@ -69,52 +71,59 @@ class ViewController: UIViewController {
 
         let presentedViewCtl: PresentedViewController! = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("PresentedViewController") as! PresentedViewController
         
-        let simpleTransitionDelegate: SimpleTransition = SimpleTransition(presentingViewController: self, presentedViewController: presentedViewCtl)
+        let simpleTransitionDelegate = SimpleTransition(presentingViewController: self, presentedViewController: presentedViewCtl)
+        
+        var size = CGSizeZero
+        if sizeSegment.selectedSegmentIndex == 0 {
+            size = SimpleTransition.FlexibleSize
+        }
+        else {
+            size = CGSize(width: SimpleTransition.FlexibleDimension, height: 300)
+        }
+        
+        var animation: TransitionAnimation = .BottomEdge(size: size)
+        //let alignment: TransitionPresentedViewAlignment = .BottomCenter
+        var motion: TransitionAnimatedMotionOptions = .EaseInOut(duration: 0.6)
+        var presentingViewSize: TransitionPresentingViewSizeOptions
         
         if animationTypeSegment.selectedSegmentIndex == 0 {
-            simpleTransitionDelegate.animation = .Dissolve
+            animation = .Dissolve(size: size)
         }
         else {
             switch transitionDirectionSegment.selectedSegmentIndex {
             case 0:
-                simpleTransitionDelegate.animation = .LeftEdge
+                animation = .LeftEdge(size: size)
                 break
             case 1:
-                simpleTransitionDelegate.animation = .RightEdge
+                animation = .RightEdge(size: size)
                 break
             case 2:
-                simpleTransitionDelegate.animation = .TopEdge
+                animation = .TopEdge(size: size)
                 break
             case 3:
-                simpleTransitionDelegate.animation = .BottomEdge
+                animation = .BottomEdge(size: size)
                 break
             default:
                 break
             }
             
             if animatedMotionSegment.selectedSegmentIndex == 0 {
-                simpleTransitionDelegate.animatedMotionOption = .EaseInOut
+                motion = .EaseInOut(duration: 0.3)
             }
             else {
-                simpleTransitionDelegate.animatedMotionOption = .Spring
+                motion = .Spring(duration: 0.6, velocity: 5, damping: 0.8)
             }
         }
         
         if presentingViewSizeSegment.selectedSegmentIndex == 0 {
-            simpleTransitionDelegate.presentingViewSizeOption = .KeepSize
+            presentingViewSize = .Equal
         }
         else {
-            simpleTransitionDelegate.presentingViewSizeOption = .Shrink
+            presentingViewSize = .Scale(scale: 0.95)
         }
         
-        if sizeSegment.selectedSegmentIndex == 0 {
-            simpleTransitionDelegate.presentedViewSize = CGSizeMake(SimpleTransition.flexibleDimension, SimpleTransition.flexibleDimension)
-        }
-        else {
-            simpleTransitionDelegate.presentedViewSize = CGSizeMake(SimpleTransition.flexibleDimension, 300)
-        }
-        
-        simpleTransitionDelegate.animationDuration = 0.6
+        simpleTransitionDelegate.setup(animation, motion: motion, presentingViewSize: presentingViewSize)
+
         presentedViewCtl.simpleTransitionDelegate = simpleTransitionDelegate
         
         self.presentViewController(presentedViewCtl, animated: true, completion: nil)

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "SimpleTransition"
-  s.version          = "1.0.0"
+  s.version          = "1.1.0"
   s.summary          = "A simple way to create custom presentation transition."
   s.description      = "iOS Custom Animated Transitioning for view controller presentation"
   s.homepage         = "https://github.com/MingLoan/SimpleTranistion"
@@ -26,7 +26,4 @@ Pod::Spec.new do |s|
     'SimpleTransition' => ['Pod/Assets/*.png']
   }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end
