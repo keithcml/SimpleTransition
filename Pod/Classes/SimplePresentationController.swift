@@ -60,7 +60,7 @@ class SimplePresentationController: UIPresentationController {
     }
     
     func removeTapOnChromeView() {
-        chromeView.addGestureRecognizer(tapGesture)
+        chromeView.removeGestureRecognizer(tapGesture)
     }
     
     // MARK: Tap Chrome View
