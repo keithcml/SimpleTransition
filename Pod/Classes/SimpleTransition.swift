@@ -24,7 +24,7 @@ import Foundation
 import UIKit
 
 /**
-     Enum to control Animation Types.
+ Enum to control Animation Types.
  */
 public enum TransitionAnimation {
     case Custom
@@ -55,7 +55,7 @@ public enum TransitionAnimation {
 }
 
 /**
-    Enum to control Presenting View Size after presentation.
+ Enum to control Presenting View Size after presentation.
  */
 public enum TransitionPresentingViewSizeOptions {
     case Equal
@@ -63,7 +63,7 @@ public enum TransitionPresentingViewSizeOptions {
 }
 
 /**
-    Enum to control Presented View Size position relative to its presenting view controller
+ Enum to control Presented View Size position relative to its presenting view controller
  */
 public enum TransitionPresentedViewAlignment {
     case TopLeft
@@ -78,7 +78,7 @@ public enum TransitionPresentedViewAlignment {
 }
 
 /**
-    Enum to control presentation animated motion
+ Enum to control presentation animated motion
  */
 public enum TransitionAnimatedMotionOptions {
     case EaseInOut(duration: NSTimeInterval)
@@ -87,7 +87,7 @@ public enum TransitionAnimatedMotionOptions {
 
 
 public class SimpleTransition: NSObject {
-
+    
     // MARK: - Public Properties
     /// represents flexible width or flexible height to the presenting view controller frame.
     public static let FlexibleDimension: CGFloat = 0.0
@@ -97,6 +97,8 @@ public class SimpleTransition: NSObject {
     public var dismissViaChromeView = true
     /// keep presenting view orientation, allow presented view to change orientation only
     public var keepPresentingViewOrientation = false
+    /// keep presenting view
+    public var keepPresentingViewWhenPresentFullScreen = false
     
     /// four parameters to control animations
     public private(set) var presentingViewSizeOption: TransitionPresentingViewSizeOptions = .Equal
@@ -140,7 +142,7 @@ public class SimpleTransition: NSObject {
     /// custom animators
     private(set) var customPresentedAnimator: UIViewControllerAnimatedTransitioning?
     private(set) var customDismissalAnimator: UIViewControllerAnimatedTransitioning?
-
+    
     /**
      Designate Initializer.
      - Parameter presentingViewController:   The Presenting View Controller.
@@ -167,7 +169,7 @@ public class SimpleTransition: NSObject {
         alignment: TransitionPresentedViewAlignment = .BottomCenter,
         motion: TransitionAnimatedMotionOptions = .EaseInOut(duration: 0.4),
         presentingViewSize: TransitionPresentingViewSizeOptions = .Equal) {
-    
+        
         self.animation = animation
         self.presentedViewAlignment = alignment
         self.animatedMotionOption = motion
@@ -194,21 +196,21 @@ public class SimpleTransition: NSObject {
 extension SimpleTransition: UIViewControllerTransitioningDelegate {
     
     public func animationControllerForPresentedController(presented: UIViewController,
-        presentingController presenting: UIViewController,
-        sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-            switch animation {
-            case .Custom:
-                if let customPresentedAnimator = customPresentedAnimator {
-                    return customPresentedAnimator
-                }
-                return nil
-            case .Dissolve, .LeftEdge, .RightEdge, .TopEdge, .BottomEdge:
-                let t_animator = TransformAnimator()
-                t_animator.presenting = true
-                t_animator.transitionDelegate = self
-                animator = t_animator
-                return t_animator
+                                                          presentingController presenting: UIViewController,
+                                                                               sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        switch animation {
+        case .Custom:
+            if let customPresentedAnimator = customPresentedAnimator {
+                return customPresentedAnimator
             }
+            return nil
+        case .Dissolve, .LeftEdge, .RightEdge, .TopEdge, .BottomEdge:
+            let t_animator = TransformAnimator()
+            t_animator.presenting = true
+            t_animator.transitionDelegate = self
+            animator = t_animator
+            return t_animator
+        }
     }
     
     public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
@@ -233,6 +235,7 @@ extension SimpleTransition: UIViewControllerTransitioningDelegate {
         presentationController.dismissViaChromeView = dismissViaChromeView
         presentationController.presentedViewSize = animation.getSize()
         presentationController.keepPresentingViewOrientation = keepPresentingViewOrientation
+        presentationController.keepPresentingViewWhenPresentFullScreen = keepPresentingViewWhenPresentFullScreen
         return presentationController
     }
 }
@@ -312,9 +315,14 @@ public extension UIViewController {
             return
         }
         
-        if viewControllerToPresent.simpleTransitionDelegate != nil {
+        if let transitionDelegate = viewControllerToPresent.simpleTransitionDelegate {
             
-            viewControllerToPresent.modalPresentationStyle = .Custom
+            if CGSizeEqualToSize(CGSizeZero, transitionDelegate.animation.getSize()) {
+                viewControllerToPresent.modalPresentationStyle = transitionDelegate.keepPresentingViewWhenPresentFullScreen ? .OverFullScreen : .FullScreen
+            }
+            else {
+                viewControllerToPresent.modalPresentationStyle = .Custom
+            }
             viewControllerToPresent.modalPresentationCapturesStatusBarAppearance = true
             viewControllerToPresent.transitioningDelegate = viewControllerToPresent.simpleTransitionDelegate
             

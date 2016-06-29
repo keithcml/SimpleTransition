@@ -1,11 +1,11 @@
 source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
-target 'SimpleTransition_Example', :exclusive => true do
+target 'SimpleTransition_Example' do
   pod "SimpleTransition", :path => "../"
 end
 
-target 'SimpleTransition_Tests', :exclusive => true do
+target 'SimpleTransition_Tests' do
   pod "SimpleTransition", :path => "../"
 
   pod 'Quick', '~> 0.8.0'

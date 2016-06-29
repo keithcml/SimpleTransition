@@ -28,7 +28,7 @@ class TransformAnimator: NSObject {
     var duration: NSTimeInterval = 0.4
     var presenting = true
     weak var transitionDelegate: SimpleTransition?
-
+    
 }
 
 extension TransformAnimator: UIViewControllerAnimatedTransitioning {
@@ -72,7 +72,7 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
         guard let containerView = transitionContext.containerView() else {
             return
         }
-
+        
         var presentingView: UIView?
         var presentedView: UIView!
         
@@ -96,60 +96,63 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
             
             containerView.addSubview(presentedView)
             
-            var width: CGFloat = 0.0
-            var height: CGFloat = 0.0
-            
-            if presentedViewSize.width == SimpleTransition.FlexibleDimension {
-                width = CGRectGetWidth(presentedView.bounds)
-            }
-            else {
-                width = presentedViewSize.width
-            }
-            
-            if presentedViewSize.height == SimpleTransition.FlexibleDimension {
-                height = CGRectGetHeight(presentedView.bounds)
-            }
-            else {
-                height = presentedViewSize.height
-            }
-            
-            presentedView.bounds = CGRectMake(0, 0, width, height)
-            
-            switch presentedViewAlignment {
-            case .TopLeft:
-                break
-            case .TopCenter:
-                presentedView.center = CGPoint(x: CGRectGetMidX(containerView.bounds),
-                                               y: CGRectGetMidY(presentedView.bounds))
-                break
-            case .TopRight:
-                presentedView.center = CGPoint(x: CGRectGetMidX(containerView.bounds),
-                                               y: CGRectGetMidY(presentedView.bounds))
-                break
-            case .CenterLeft:
-                presentedView.center = CGPoint(x: CGRectGetMidX(presentedView.bounds),
-                                               y: CGRectGetMidY(containerView.bounds))
-                break
-            case .CenterCenter:
-                presentedView.center = CGPoint(x: CGRectGetMidX(containerView.bounds),
-                                               y: CGRectGetMidY(containerView.bounds))
-                break
-            case .CenterRight:
-                presentedView.center = CGPoint(x: CGRectGetWidth(containerView.bounds) - CGRectGetWidth(presentedView.bounds)/2,
-                                               y: CGRectGetMidY(containerView.bounds))
-                break
-            case .BottomLeft:
-                presentedView.center = CGPoint(x: CGRectGetMidX(presentedView.bounds),
-                                               y: CGRectGetHeight(containerView.bounds) - CGRectGetHeight(presentedView.bounds)/2)
-                break
-            case .BottomCenter:
-                presentedView.center = CGPoint(x: CGRectGetMidX(containerView.bounds),
-                                               y: CGRectGetHeight(containerView.bounds) - CGRectGetHeight(presentedView.bounds)/2)
-                break
-            case .BottomRight:
-                presentedView.center = CGPoint(x: CGRectGetWidth(containerView.bounds) - CGRectGetWidth(presentedView.bounds)/2,
-                                               y: CGRectGetHeight(containerView.bounds) - CGRectGetHeight(presentedView.bounds)/2)
-                break
+            if !CGSizeEqualToSize(presentedViewSize, SimpleTransition.FlexibleSize) {
+                
+                var width: CGFloat = 0.0
+                var height: CGFloat = 0.0
+                
+                if presentedViewSize.width == SimpleTransition.FlexibleDimension {
+                    width = CGRectGetWidth(presentedView.bounds)
+                }
+                else {
+                    width = presentedViewSize.width
+                }
+                
+                if presentedViewSize.height == SimpleTransition.FlexibleDimension {
+                    height = CGRectGetHeight(presentedView.bounds)
+                }
+                else {
+                    height = presentedViewSize.height
+                }
+                
+                presentedView.bounds = CGRectMake(0, 0, width, height)
+                
+                switch presentedViewAlignment {
+                case .TopLeft:
+                    break
+                case .TopCenter:
+                    presentedView.center = CGPoint(x: CGRectGetMidX(containerView.bounds),
+                                                   y: CGRectGetMidY(presentedView.bounds))
+                    break
+                case .TopRight:
+                    presentedView.center = CGPoint(x: CGRectGetMidX(containerView.bounds),
+                                                   y: CGRectGetMidY(presentedView.bounds))
+                    break
+                case .CenterLeft:
+                    presentedView.center = CGPoint(x: CGRectGetMidX(presentedView.bounds),
+                                                   y: CGRectGetMidY(containerView.bounds))
+                    break
+                case .CenterCenter:
+                    presentedView.center = CGPoint(x: CGRectGetMidX(containerView.bounds),
+                                                   y: CGRectGetMidY(containerView.bounds))
+                    break
+                case .CenterRight:
+                    presentedView.center = CGPoint(x: CGRectGetWidth(containerView.bounds) - CGRectGetWidth(presentedView.bounds)/2,
+                                                   y: CGRectGetMidY(containerView.bounds))
+                    break
+                case .BottomLeft:
+                    presentedView.center = CGPoint(x: CGRectGetMidX(presentedView.bounds),
+                                                   y: CGRectGetHeight(containerView.bounds) - CGRectGetHeight(presentedView.bounds)/2)
+                    break
+                case .BottomCenter:
+                    presentedView.center = CGPoint(x: CGRectGetMidX(containerView.bounds),
+                                                   y: CGRectGetHeight(containerView.bounds) - CGRectGetHeight(presentedView.bounds)/2)
+                    break
+                case .BottomRight:
+                    presentedView.center = CGPoint(x: CGRectGetWidth(containerView.bounds) - CGRectGetWidth(presentedView.bounds)/2,
+                                                   y: CGRectGetHeight(containerView.bounds) - CGRectGetHeight(presentedView.bounds)/2)
+                    break
+                }
             }
             
             switch animation {
@@ -157,13 +160,13 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
                 presentedView.transform = CGAffineTransformMakeTranslation(-CGRectGetMaxX(presentedView.bounds), 0)
                 break
             case .RightEdge:
-                presentedView.transform = CGAffineTransformMakeTranslation(CGRectGetWidth(containerView.bounds) - CGRectGetMinX(presentedView.bounds), 0)
+                presentedView.transform = CGAffineTransformMakeTranslation(CGRectGetWidth(containerView.bounds) - CGRectGetMinX(presentedView.frame), 0)
                 break
             case .TopEdge:
                 presentedView.transform = CGAffineTransformMakeTranslation(0, -CGRectGetMaxY(presentedView.bounds))
                 break
             case .BottomEdge:
-                presentedView.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(containerView.bounds) - CGRectGetMinY(presentedView.bounds))
+                presentedView.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(containerView.bounds))
                 break
             case .Dissolve:
                 presentedView.alpha = 0.0
@@ -171,7 +174,7 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
             default:
                 break
             }
-
+            
             animationBlock = {
                 
                 presentedView.transform = CGAffineTransformIdentity
