@@ -41,6 +41,11 @@ class SimplePresentationController: UIPresentationController {
         }
     }
     var presentedViewSize = SimpleTransition.FlexibleSize
+    var chromeViewBackgroundColor: UIColor = UIColor(white: 0.0, alpha: 0.3) {
+        didSet {
+            chromeView.backgroundColor = chromeViewBackgroundColor
+        }
+    }
     
     let chromeView = UIView()
     

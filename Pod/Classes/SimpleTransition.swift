@@ -99,6 +99,8 @@ public class SimpleTransition: NSObject {
     public var keepPresentingViewOrientation = false
     /// keep presenting view
     public var keepPresentingViewWhenPresentFullScreen = false
+    /// Chrome View background Color
+    public var chromeViewBackgroundColor = UIColor(white: 0.0, alpha: 0.3)
     
     /// four parameters to control animations
     public private(set) var presentingViewSizeOption: TransitionPresentingViewSizeOptions = .Equal
@@ -236,6 +238,7 @@ extension SimpleTransition: UIViewControllerTransitioningDelegate {
         presentationController.presentedViewSize = animation.getSize()
         presentationController.keepPresentingViewOrientation = keepPresentingViewOrientation
         presentationController.keepPresentingViewWhenPresentFullScreen = keepPresentingViewWhenPresentFullScreen
+        presentationController.chromeViewBackgroundColor = chromeViewBackgroundColor
         return presentationController
     }
 }
