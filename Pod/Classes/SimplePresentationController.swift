@@ -53,7 +53,7 @@ class SimplePresentationController: UIPresentationController {
     
     lazy var tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SimplePresentationController.tap(_:)))
     
-    override init(presentedViewController: UIViewController, presentingViewController: UIViewController) {
+    override init(presentedViewController: UIViewController, presentingViewController: UIViewController?) {
         super.init(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
         chromeView.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
         chromeView.alpha = 0.0

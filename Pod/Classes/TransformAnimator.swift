@@ -69,9 +69,7 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
         let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey)
         let toView = transitionContext.viewForKey(UITransitionContextToViewKey)
         
-        guard let containerView = transitionContext.containerView() else {
-            return
-        }
+        let containerView = transitionContext.containerView()
         
         var presentingView: UIView?
         var presentedView: UIView!

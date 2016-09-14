@@ -231,7 +231,7 @@ extension SimpleTransition: UIViewControllerTransitioningDelegate {
         }
     }
     
-    public func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController, sourceViewController source: UIViewController) -> UIPresentationController? {
+    public func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController?, sourceViewController source: UIViewController) -> UIPresentationController? {
         let presentationController = SimplePresentationController(presentedViewController: presented, presentingViewController:presenting)
         presentationController.presentedViewAlignment = presentedViewAlignment
         presentationController.dismissViaChromeView = dismissViaChromeView
