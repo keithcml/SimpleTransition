@@ -8,14 +8,14 @@
 
 Pod::Spec.new do |s|
   s.name             = "SimpleTransition"
-  s.version          = "1.2.2"
+  s.version          = "1.2.3"
   s.summary          = "A simple way to create custom presentation transition."
   s.description      = "iOS Custom Animated Transitioning for view controller presentation"
-  s.homepage         = "https://github.com/MingLoan/SimpleTranistion"
+  s.homepage         = "https://github.com/MingLoan/SimpleTransition"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
   s.author           = { "Mingloan" => "mingloanchan@gmail.com" }
-  s.source           = { :git => "https://github.com/MingLoan/SimpleTranistion.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/MingLoan/SimpleTransition.git", :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.platform     = :ios, '8.0'
