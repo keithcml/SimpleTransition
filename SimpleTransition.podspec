@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "SimpleTransition"
-  s.version          = "1.2.3"
+  s.version          = "1.2.4"
   s.summary          = "A simple way to create custom presentation transition."
   s.description      = "iOS Custom Animated Transitioning for view controller presentation"
   s.homepage         = "https://github.com/MingLoan/SimpleTransition"
