@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "SimpleTransition"
-  s.version          = "1.2.4"
+  s.version          = "2.0.0"
   s.summary          = "A simple way to create custom presentation transition."
   s.description      = "iOS Custom Animated Transitioning for view controller presentation"
   s.homepage         = "https://github.com/MingLoan/SimpleTransition"
@@ -22,8 +22,5 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes/**/*'
-#s.resource_bundles = {
-#    'SimpleTransition' => ['Pod/Assets/*.png']
-#  }
 
 end
