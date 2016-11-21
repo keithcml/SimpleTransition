@@ -1,22 +1,22 @@
 PODS:
-  - Nimble (3.0.0)
-  - Quick (0.8.0)
-  - SimpleTransition (1.1.3)
+  - Nimble (5.1.1)
+  - Quick (0.10.0)
+  - SimpleTransition (2.0.0)
 
 DEPENDENCIES:
-  - Nimble (= 3.0.0)
-  - Quick (~> 0.8.0)
+  - Nimble
+  - Quick
   - SimpleTransition (from `../`)
 
 EXTERNAL SOURCES:
   SimpleTransition:
-    :path: "../"
+    :path: ../
 
 SPEC CHECKSUMS:
-  Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
-  Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
-  SimpleTransition: 63dd37ce130402908fdf2b24a955f71af658da7c
+  Nimble: 415e3aa3267e7bc2c96b05fa814ddea7bb686a29
+  Quick: 5d290df1c69d5ee2f0729956dcf0fd9a30447eaa
+  SimpleTransition: 4c9fcfcf1ded170c09f61b156f1964f033bf1032
 
-PODFILE CHECKSUM: 5c07206f20a3648ca4b9b21bca8a21a167b5986f
+PODFILE CHECKSUM: 92b40647a22a84993009d721012c2d245e8658d2
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.0.rc.2

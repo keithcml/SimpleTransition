@@ -248,7 +248,7 @@ extension UIViewController {
         static var simpleTransitionDelegate: SimpleTransition?
     }
     
-    private var simpleTransitionDelegate: SimpleTransition? {
+    public var simpleTransitionDelegate: SimpleTransition? {
         get {
             return objc_getAssociatedObject(self, &AssociatedKeys.simpleTransitionDelegate) as? SimpleTransition
         }
