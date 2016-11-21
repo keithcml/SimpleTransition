@@ -86,27 +86,27 @@ public enum TransitionAnimatedMotionOptions {
 }
 
 
-open class SimpleTransition: NSObject {
+public class SimpleTransition: NSObject {
     
     // MARK: - Public Properties
     /// represents flexible width or flexible height to the presenting view controller frame.
-    open static let FlexibleDimension: CGFloat = 0.0
-    open static let FlexibleSize = CGSize(width: SimpleTransition.FlexibleDimension, height: SimpleTransition.FlexibleDimension)
+    public static let FlexibleDimension: CGFloat = 0.0
+    public static let FlexibleSize = CGSize(width: SimpleTransition.FlexibleDimension, height: SimpleTransition.FlexibleDimension)
     
     /// dismiss presenting view controller when user taps on dimmer area
-    open var dismissViaChromeView = true
+    public var dismissViaChromeView = true
     /// keep presenting view orientation, allow presented view to change orientation only
-    open var keepPresentingViewOrientation = false
+    public var keepPresentingViewOrientation = false
     /// keep presenting view
-    open var keepPresentingViewWhenPresentFullScreen = false
+    public var keepPresentingViewWhenPresentFullScreen = false
     /// Chrome View background Color
-    open var chromeViewBackgroundColor = UIColor(white: 0.0, alpha: 0.3)
+    public var chromeViewBackgroundColor = UIColor(white: 0.0, alpha: 0.3)
     
     /// four parameters to control animations
-    open fileprivate(set) var presentingViewSizeOption: TransitionPresentingViewSizeOptions = .equal
-    open fileprivate(set) var presentedViewAlignment: TransitionPresentedViewAlignment = .bottomCenter
-    open fileprivate(set) var animatedMotionOption: TransitionAnimatedMotionOptions = .easeInOut(duration: 0.4)
-    open fileprivate(set) var animation: TransitionAnimation = .bottomEdge(size: CGSize(width: FlexibleDimension, height: FlexibleDimension))  {
+    public private(set) var presentingViewSizeOption: TransitionPresentingViewSizeOptions = .equal
+    public private(set) var presentedViewAlignment: TransitionPresentedViewAlignment = .bottomCenter
+    public private(set) var animatedMotionOption: TransitionAnimatedMotionOptions = .easeInOut(duration: 0.4)
+    public private(set) var animation: TransitionAnimation = .bottomEdge(size: CGSize(width: FlexibleDimension, height: FlexibleDimension))  {
         willSet {
             switch newValue as TransitionAnimation {
             case .leftEdge:
@@ -135,15 +135,15 @@ open class SimpleTransition: NSObject {
     // MARK: - Private Properties
     
     /// weak reference of presenting view controller
-    fileprivate(set) weak var stm_presentingViewController: UIViewController?
+    private(set) weak var stm_presentingViewController: UIViewController?
     /// weak reference of presented view controller
-    fileprivate(set) weak var stm_presentedViewController: UIViewController?
+    private(set) weak var stm_presentedViewController: UIViewController?
     
     /// reference of transition animator object
-    fileprivate(set) var animator: UIViewControllerAnimatedTransitioning?
+    private(set) var animator: UIViewControllerAnimatedTransitioning?
     /// custom animators
-    fileprivate(set) var customPresentedAnimator: UIViewControllerAnimatedTransitioning?
-    fileprivate(set) var customDismissalAnimator: UIViewControllerAnimatedTransitioning?
+    private(set) var customPresentedAnimator: UIViewControllerAnimatedTransitioning?
+    private(set) var customDismissalAnimator: UIViewControllerAnimatedTransitioning?
     
     /**
      Designate Initializer.
@@ -166,7 +166,7 @@ open class SimpleTransition: NSObject {
      - Parameter motion: The animate motion of presentation.
      - Parameter presentingViewSize: The Presenting View Controller Size after presentation.
      */
-    open func setup(
+    public func setup(
         _ animation: TransitionAnimation = .bottomEdge(size: CGSize(width: FlexibleDimension, height: FlexibleDimension)),
         alignment: TransitionPresentedViewAlignment = .bottomCenter,
         motion: TransitionAnimatedMotionOptions = .easeInOut(duration: 0.4),
@@ -183,7 +183,7 @@ open class SimpleTransition: NSObject {
      - Parameter customPresentedAnimator: The object for presenting animation which must conform to UIViewControllerAnimatedTransitioning.
      - Parameter customDismissalAnimator: The object for dismissal animation which must conform to UIViewControllerAnimatedTransitioning.
      */
-    open func setCustomAnimators(
+    public func setCustomAnimators(
         _ customPresentedAnimator: UIViewControllerAnimatedTransitioning?,
         customDismissalAnimator: UIViewControllerAnimatedTransitioning?) {
         
@@ -231,8 +231,13 @@ extension SimpleTransition: UIViewControllerTransitioningDelegate {
         }
     }
     
+<<<<<<< HEAD
+    public func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController?, sourceViewController source: UIViewController) -> UIPresentationController? {
+        let presentationController = SimplePresentationController(presentedViewController: presented, presentingViewController:presenting)
+=======
     public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         let presentationController = SimplePresentationController(presentedViewController: presented, presenting:presenting)
+>>>>>>> 79902a2e71fb5475a2f69cdf0ff361bf325432d2
         presentationController.presentedViewAlignment = presentedViewAlignment
         presentationController.dismissViaChromeView = dismissViaChromeView
         presentationController.presentedViewSize = animation.getSize()
@@ -243,12 +248,12 @@ extension SimpleTransition: UIViewControllerTransitioningDelegate {
     }
 }
 
-extension UIViewController {
-    fileprivate struct AssociatedKeys {
+public extension UIViewController {
+    private struct AssociatedKeys {
         static var simpleTransitionDelegate: SimpleTransition?
     }
     
-    private var simpleTransitionDelegate: SimpleTransition? {
+    var simpleTransitionDelegate: SimpleTransition? {
         get {
             return objc_getAssociatedObject(self, &AssociatedKeys.simpleTransitionDelegate) as? SimpleTransition
         }
@@ -265,74 +270,60 @@ extension UIViewController {
         }
     }
     
-    open override class func initialize() {
-//        struct Static {
-//            static var token_present = 0
-//            static var token_dismiss = 0
-//        }
-//        
-        // make sure this isn't a subclass
-        if self != UIViewController.self { return }
+    public override class func initialize() {
+        struct Static {
+            static var token_present = 0
+            static var token_dismiss = 0
+        }
         
-        let presentSwizzlingClosure: () = {
+        // make sure this isn't a subclass
+        if self !== UIViewController.self {
+            return
+        }
+        
+        if Static.token_present == 0 {
+            Static.token_present = 1
+        //dispatch_once(&Static.token_present) {
+            
             let originalSelector = #selector(UIViewController.present(_:animated:completion:))
             let swizzledSelector = #selector(UIViewController.stm_present(_:animated:completion:))
             
-            let originalMethod = class_getInstanceMethod(UIViewController.self, originalSelector)
-            let swizzledMethod = class_getInstanceMethod(UIViewController.self, swizzledSelector)
+            let originalMethod = class_getInstanceMethod(self, originalSelector)
+            let swizzledMethod = class_getInstanceMethod(self, swizzledSelector)
             
-            let didAddMethod = class_addMethod(UIViewController.self,
-                                               originalSelector,
-                                               method_getImplementation(swizzledMethod),
-                                               method_getTypeEncoding(swizzledMethod))
+            let didAddMethod = class_addMethod(self, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
             
             if didAddMethod {
-                class_replaceMethod(UIViewController.self,
-                                    swizzledSelector,
-                                    method_getImplementation(originalMethod),
-                                    method_getTypeEncoding(originalMethod))
-            }
-            else {
+                class_replaceMethod(self, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
+            } else {
                 method_exchangeImplementations(originalMethod, swizzledMethod)
             }
-        }()
-        presentSwizzlingClosure
+        }
         
-        let dismissSwizzlingClosure: () = {
+        if Static.token_dismiss == 0 {
+            Static.token_dismiss = 1
+        //dispatch_once(&Static.token_dismiss) {
+            
+            
             let originalSelector = #selector(UIViewController.dismiss(animated:completion:))
             let swizzledSelector = #selector(UIViewController.stm_dismiss(animated:completion:))
             
-            let originalMethod = class_getInstanceMethod(UIViewController.self, originalSelector)
-            let swizzledMethod = class_getInstanceMethod(UIViewController.self, swizzledSelector)
+            let originalMethod = class_getInstanceMethod(self, originalSelector)
+            let swizzledMethod = class_getInstanceMethod(self, swizzledSelector)
             
-            let didAddMethod = class_addMethod(UIViewController.self,
-                                               originalSelector,
-                                               method_getImplementation(swizzledMethod),
-                                               method_getTypeEncoding(swizzledMethod))
+            let didAddMethod = class_addMethod(self, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
             
             if didAddMethod {
-                class_replaceMethod(UIViewController.self,
-                                    swizzledSelector,
-                                    method_getImplementation(originalMethod),
-                                    method_getTypeEncoding(originalMethod))
+                class_replaceMethod(self, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
             }
             else {
                 method_exchangeImplementations(originalMethod, swizzledMethod)
             }
-        }()
-        dismissSwizzlingClosure
-        
-//        if Static.token_present == 0 {
-//            Static.token_present = 1
-//        }
-//        
-//        if Static.token_dismiss == 0 {
-//            Static.token_dismiss = 1
-//        }
+        }
     }
     
     // MARK: - Method Swizzling
-    @objc private func stm_present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> ())? = nil) {
+    func stm_present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
 
         if let vc = viewControllerToPresent as? UIAlertController {
             self.stm_present(vc, animated: flag, completion: completion)
@@ -361,14 +352,14 @@ extension UIViewController {
         }
     }
     
-    @objc private func stm_dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+    func stm_dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         
-        if (presentedViewController as? UIAlertController) != nil {
+        if let vc = presentedViewController as? UIAlertController {
             self.stm_dismiss(animated: flag, completion: completion)
             return
         }
         
-        if simpleTransitionDelegate != nil {
+        if let transitionDelegate = simpleTransitionDelegate {
             // things to do ...
             self.stm_dismiss(animated: flag, completion: completion)
         }

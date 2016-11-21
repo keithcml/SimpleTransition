@@ -29,7 +29,7 @@ class SimplePresentationController: UIPresentationController {
     // default value
     var keepPresentingViewOrientation = false
     var keepPresentingViewWhenPresentFullScreen = false
-    var presentedViewAlignment: TransitionPresentedViewAlignment = .centerCenter
+    var presentedViewAlignment: TransitionPresentedViewAlignment = .CenterCenter
     var dismissViaChromeView = false {
         willSet {
             if (newValue) {
@@ -49,56 +49,56 @@ class SimplePresentationController: UIPresentationController {
     
     let chromeView = UIView()
     
-    fileprivate var boundsOfPresentedViewInContainerView = CGRect.zero
+    private var boundsOfPresentedViewInContainerView = CGRectZero
     
-    lazy var tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap(_:)))
+    lazy var tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SimplePresentationController.tap(_:)))
     
-    override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
-        super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
+    override init(presentedViewController: UIViewController, presentingViewController: UIViewController) {
+        super.init(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
         chromeView.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
         chromeView.alpha = 0.0
         delegate = self
     }
     
     // MARK: override func
-    override var frameOfPresentedViewInContainerView : CGRect {
+    override func frameOfPresentedViewInContainerView() -> CGRect {
         
         var frame = boundsOfPresentedViewInContainerView
         
         guard let containerView = containerView else { return frame }
-        guard let presentedView = presentedView else { return frame }
+        guard let presentedView = presentedView() else { return frame }
         
         switch presentedViewAlignment {
-        case .topLeft:
+        case .TopLeft:
             break;
-        case .topCenter:
-            frame.origin = CGPoint(x: presentedView.frame.midX - frame.width/2, y: frame.minY)
+        case .TopCenter:
+            frame.origin = CGPoint(x: CGRectGetMidX(presentedView.frame) - CGRectGetWidth(frame)/2, y: CGRectGetMinY(frame))
             break
-        case .topRight:
-            frame.origin = CGPoint(x: presentedView.frame.width - frame.width, y: frame.minY)
+        case .TopRight:
+            frame.origin = CGPoint(x: CGRectGetWidth(presentedView.frame) - CGRectGetWidth(frame), y: CGRectGetMinY(frame))
             break
-        case .centerLeft:
-            frame.origin = CGPoint(x: frame.minX, y: presentedView.frame.midY - frame.height/2)
+        case .CenterLeft:
+            frame.origin = CGPoint(x: CGRectGetMinX(frame), y: CGRectGetMidY(presentedView.frame) - CGRectGetHeight(frame)/2)
             break
-        case .centerCenter:
-            frame.origin = CGPoint(x: presentedView.frame.midX - frame.width/2,
-                                   y: presentedView.frame.midY - frame.height/2)
+        case .CenterCenter:
+            frame.origin = CGPoint(x: CGRectGetMidX(presentedView.frame) - CGRectGetWidth(frame)/2,
+                                   y: CGRectGetMidY(presentedView.frame) - CGRectGetHeight(frame)/2)
             break
-        case .centerRight:
-            frame.origin = CGPoint(x: presentedView.frame.width - frame.width,
-                                   y: presentedView.frame.midY - frame.height/2)
+        case .CenterRight:
+            frame.origin = CGPoint(x: CGRectGetWidth(presentedView.frame) - CGRectGetWidth(frame),
+                                   y: CGRectGetMidY(presentedView.frame) - CGRectGetHeight(frame)/2)
             break
-        case .bottomLeft:
-            frame.origin = CGPoint(x: frame.minX,
-                                   y: containerView.frame.height - frame.height)
+        case .BottomLeft:
+            frame.origin = CGPoint(x: CGRectGetMinX(frame),
+                                   y: CGRectGetHeight(containerView.frame) - CGRectGetHeight(frame))
             break
-        case .bottomCenter:
-            frame.origin = CGPoint(x: containerView.bounds.midX - frame.width/2,
-                                   y: containerView.frame.height - frame.height)
+        case .BottomCenter:
+            frame.origin = CGPoint(x: CGRectGetMidX(containerView.bounds) - CGRectGetWidth(frame)/2,
+                                   y: CGRectGetHeight(containerView.frame) - CGRectGetHeight(frame))
             break
-        case .bottomRight:
-            frame.origin = CGPoint(x: containerView.bounds.width - frame.width,
-                                   y: containerView.frame.height - frame.height)
+        case .BottomRight:
+            frame.origin = CGPoint(x: CGRectGetWidth(containerView.bounds) - CGRectGetWidth(frame),
+                                   y: CGRectGetHeight(containerView.frame) - CGRectGetHeight(frame))
             break
         }
         
@@ -109,18 +109,18 @@ class SimplePresentationController: UIPresentationController {
         
         guard let containerView = containerView else { return }
         
-        guard let presentedView = presentedView else { return }
+        guard let presentedView = presentedView() else { return }
         
         chromeView.frame = containerView.bounds;
         
-        if (!SimpleTransition.FlexibleSize.equalTo(presentedViewSize)) {
+        if (!CGSizeEqualToSize(SimpleTransition.FlexibleSize, presentedViewSize)) {
             
-            let width = presentedViewSize.width == SimpleTransition.FlexibleDimension ? presentedView.bounds.width : presentedViewSize.width
-            let height = presentedViewSize.height == SimpleTransition.FlexibleDimension ? presentedView.bounds.height
+            let width = presentedViewSize.width == SimpleTransition.FlexibleDimension ? CGRectGetWidth(presentedView.bounds) : presentedViewSize.width
+            let height = presentedViewSize.height == SimpleTransition.FlexibleDimension ? CGRectGetHeight(presentedView.bounds)
                 : presentedViewSize.height
             
             boundsOfPresentedViewInContainerView = CGRect(x: 0, y: 0, width: width, height: height)
-            presentedView.frame = frameOfPresentedViewInContainerView
+            presentedView.frame = frameOfPresentedViewInContainerView()
         }
         else {
             boundsOfPresentedViewInContainerView = presentedView.bounds
@@ -131,20 +131,20 @@ class SimplePresentationController: UIPresentationController {
     override func presentationTransitionWillBegin() {
         
         guard let containerView = containerView else { return }
-        guard let coordinator = presentedViewController.transitionCoordinator else { return }
+        guard let coordinator = presentedViewController.transitionCoordinator() else { return }
         
         chromeView.frame = containerView.bounds
         chromeView.alpha = 0.0
-        containerView.insertSubview(chromeView, at:0)
+        containerView.insertSubview(chromeView, atIndex:0)
         
-        coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) -> Void in
+        coordinator.animateAlongsideTransition({ (context: UIViewControllerTransitionCoordinatorContext) -> Void in
             self.chromeView.alpha = 1.0
             }, completion: { (context: UIViewControllerTransitionCoordinatorContext) -> Void in
                 
         })
     }
     
-    override func presentationTransitionDidEnd(_ completed: Bool) {
+    override func presentationTransitionDidEnd(completed: Bool) {
         if !completed {
             chromeView.removeFromSuperview()
         }
@@ -152,18 +152,18 @@ class SimplePresentationController: UIPresentationController {
     
     override func dismissalTransitionWillBegin() {
         
-        guard let coordinator = presentedViewController.transitionCoordinator else { return }
-        coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) -> Void in
+        guard let coordinator = presentedViewController.transitionCoordinator() else { return }
+        coordinator.animateAlongsideTransition({ (context: UIViewControllerTransitionCoordinatorContext) -> Void in
             self.chromeView.alpha = 0.0
             }, completion: { (context: UIViewControllerTransitionCoordinatorContext) -> Void in
                 
         })
     }
     
-    override func dismissalTransitionDidEnd(_ completed: Bool) {
+    override func dismissalTransitionDidEnd(completed: Bool) {
         if !completed {
-            UIView.animate(
-                withDuration: 0.2,
+            UIView.animateWithDuration(
+                0.2,
                 animations: {
                     self.chromeView.alpha = 1.0;
             })
@@ -173,26 +173,27 @@ class SimplePresentationController: UIPresentationController {
         }
     }
     
-    override var shouldPresentInFullscreen : Bool {
-        if (SimpleTransition.FlexibleSize.equalTo(presentedViewSize) && !keepPresentingViewWhenPresentFullScreen) {
+    override func shouldPresentInFullscreen() -> Bool {
+        if (CGSizeEqualToSize(SimpleTransition.FlexibleSize, presentedViewSize) && !keepPresentingViewWhenPresentFullScreen) {
             return true
         }
         return false
     }
     
-    override var shouldRemovePresentersView : Bool {
-        if keepPresentingViewOrientation || shouldPresentInFullscreen {
+    override func shouldRemovePresentersView() -> Bool {
+        if keepPresentingViewOrientation || shouldPresentInFullscreen() {
             return true
         }
         return false
     }
     
-    override var adaptivePresentationStyle : UIModalPresentationStyle {
-        return .fullScreen
+    
+    override func adaptivePresentationStyle() -> UIModalPresentationStyle {
+        return .FullScreen
     }
     
-    override func adaptivePresentationStyle(for traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return .fullScreen
+    override func adaptivePresentationStyleForTraitCollection(traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .FullScreen
     }
     
     // MARK: Chrome View
@@ -205,9 +206,9 @@ class SimplePresentationController: UIPresentationController {
     }
     
     // MARK: Tap Chrome View
-    func tap(_ sender: UITapGestureRecognizer) {
-        if sender.state == .ended {
-            presentedViewController.dismiss(animated: true, completion: nil)
+    func tap(sender: UITapGestureRecognizer) {
+        if sender.state == .Ended {
+            presentedViewController.dismissViewControllerAnimated(true, completion: nil)
         }
     }
 }
@@ -215,7 +216,7 @@ class SimplePresentationController: UIPresentationController {
 // MARK: - UIAdaptivePresentationControllerDelegate
 extension SimplePresentationController: UIAdaptivePresentationControllerDelegate {
     
-    func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
+    func presentationController(controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
         // further development...
         return nil
     }

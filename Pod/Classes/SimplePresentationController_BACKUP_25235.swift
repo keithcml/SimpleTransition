@@ -49,24 +49,29 @@ class SimplePresentationController: UIPresentationController {
     
     let chromeView = UIView()
     
-    fileprivate var boundsOfPresentedViewInContainerView = CGRect.zero
+    private var boundsOfPresentedViewInContainerView = CGRect.zero
     
     lazy var tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap(_:)))
     
+<<<<<<< HEAD
+    override init(presentedViewController: UIViewController, presentingViewController: UIViewController?) {
+        super.init(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
+=======
     override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
+>>>>>>> 79902a2e71fb5475a2f69cdf0ff361bf325432d2
         chromeView.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
         chromeView.alpha = 0.0
         delegate = self
     }
     
     // MARK: override func
-    override var frameOfPresentedViewInContainerView : CGRect {
+    override func frameOfPresentedViewInContainerView() -> CGRect {
         
         var frame = boundsOfPresentedViewInContainerView
         
         guard let containerView = containerView else { return frame }
-        guard let presentedView = presentedView else { return frame }
+        guard let presentedView = presentedView() else { return frame }
         
         switch presentedViewAlignment {
         case .topLeft:
@@ -109,7 +114,7 @@ class SimplePresentationController: UIPresentationController {
         
         guard let containerView = containerView else { return }
         
-        guard let presentedView = presentedView else { return }
+        guard let presentedView = presentedView() else { return }
         
         chromeView.frame = containerView.bounds;
         
@@ -120,7 +125,7 @@ class SimplePresentationController: UIPresentationController {
                 : presentedViewSize.height
             
             boundsOfPresentedViewInContainerView = CGRect(x: 0, y: 0, width: width, height: height)
-            presentedView.frame = frameOfPresentedViewInContainerView
+            presentedView.frame = frameOfPresentedViewInContainerView()
         }
         else {
             boundsOfPresentedViewInContainerView = presentedView.bounds
@@ -131,7 +136,7 @@ class SimplePresentationController: UIPresentationController {
     override func presentationTransitionWillBegin() {
         
         guard let containerView = containerView else { return }
-        guard let coordinator = presentedViewController.transitionCoordinator else { return }
+        guard let coordinator = presentedViewController.transitionCoordinator() else { return }
         
         chromeView.frame = containerView.bounds
         chromeView.alpha = 0.0
@@ -152,7 +157,7 @@ class SimplePresentationController: UIPresentationController {
     
     override func dismissalTransitionWillBegin() {
         
-        guard let coordinator = presentedViewController.transitionCoordinator else { return }
+        guard let coordinator = presentedViewController.transitionCoordinator() else { return }
         coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) -> Void in
             self.chromeView.alpha = 0.0
             }, completion: { (context: UIViewControllerTransitionCoordinatorContext) -> Void in
@@ -173,21 +178,21 @@ class SimplePresentationController: UIPresentationController {
         }
     }
     
-    override var shouldPresentInFullscreen : Bool {
+    override func shouldPresentInFullscreen() -> Bool {
         if (SimpleTransition.FlexibleSize.equalTo(presentedViewSize) && !keepPresentingViewWhenPresentFullScreen) {
             return true
         }
         return false
     }
     
-    override var shouldRemovePresentersView : Bool {
-        if keepPresentingViewOrientation || shouldPresentInFullscreen {
+    override func shouldRemovePresentersView() -> Bool {
+        if keepPresentingViewOrientation || shouldPresentInFullscreen() {
             return true
         }
         return false
     }
     
-    override var adaptivePresentationStyle : UIModalPresentationStyle {
+    override func adaptivePresentationStyle() -> UIModalPresentationStyle {
         return .fullScreen
     }
     

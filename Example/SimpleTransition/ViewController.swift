@@ -31,10 +31,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        animatedMotionLabel.hidden = true
-        animatedMotionSegment.hidden = true
-        transitionDirectionLabel.hidden = true
-        transitionDirectionSegment.hidden = true
+        animatedMotionLabel.isHidden = true
+        animatedMotionSegment.isHidden = true
+        transitionDirectionLabel.isHidden = true
+        transitionDirectionSegment.isHidden = true
     }
     
     @IBAction func animationChanged(sender: AnyObject) {
@@ -42,38 +42,38 @@ class ViewController: UIViewController {
             
             animatedMotionSegment.selectedSegmentIndex = 0
             
-            animatedMotionLabel.hidden = true
-            animatedMotionSegment.hidden = true
-            transitionDirectionLabel.hidden = true
-            transitionDirectionSegment.hidden = true
+            animatedMotionLabel.isHidden = true
+            animatedMotionSegment.isHidden = true
+            transitionDirectionLabel.isHidden = true
+            transitionDirectionSegment.isHidden = true
             /*
-            horizontalAlignmentLabel.hidden = false
-            horizontalAlignmentSegment.hidden = false
-            verticleAlignmentLabel.hidden = false
-            verticleAlignmentSegment.hidden = false
+            horizontalAlignmentLabel.isHidden = false
+            horizontalAlignmentSegment.isHidden = false
+            verticleAlignmentLabel.isHidden = false
+            verticleAlignmentSegment.isHidden = false
             */
         }
         else {
-            animatedMotionLabel.hidden = false
-            animatedMotionSegment.hidden = false
-            transitionDirectionLabel.hidden = false
-            transitionDirectionSegment.hidden = false
+            animatedMotionLabel.isHidden = false
+            animatedMotionSegment.isHidden = false
+            transitionDirectionLabel.isHidden = false
+            transitionDirectionSegment.isHidden = false
             /*
-            horizontalAlignmentLabel.hidden = true
-            horizontalAlignmentSegment.hidden = true
-            verticleAlignmentLabel.hidden = true
-            verticleAlignmentSegment.hidden = true
+            horizontalAlignmentLabel.isHidden = true
+            horizontalAlignmentSegment.isHidden = true
+            verticleAlignmentLabel.isHidden = true
+            verticleAlignmentSegment.isHidden = true
             */
         }
     }
     
     @IBAction func present(sender: AnyObject) {
 
-        let presentedViewCtl: PresentedViewController! = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("PresentedViewController") as! PresentedViewController
+        let presentedViewCtl: PresentedViewController! = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PresentedViewController") as! PresentedViewController
         
         let simpleTransitionDelegate = SimpleTransition(presentingViewController: self, presentedViewController: presentedViewCtl)
         
-        var size = CGSizeZero
+        var size = CGSize.zero
         if sizeSegment.selectedSegmentIndex == 0 {
             size = SimpleTransition.FlexibleSize
         }
@@ -81,52 +81,53 @@ class ViewController: UIViewController {
             size = CGSize(width: SimpleTransition.FlexibleDimension, height: 300)
         }
         
-        var animation: TransitionAnimation = .BottomEdge(size: size)
+        var animation: TransitionAnimation = .bottomEdge(size: size)
         //let alignment: TransitionPresentedViewAlignment = .BottomCenter
-        var motion: TransitionAnimatedMotionOptions = .EaseInOut(duration: 0.6)
+        var motion: TransitionAnimatedMotionOptions = .easeInOut(duration: 0.6)
         var presentingViewSize: TransitionPresentingViewSizeOptions
         
         if animationTypeSegment.selectedSegmentIndex == 0 {
-            animation = .Dissolve(size: size)
+            animation = .dissolve(size: size)
         }
         else {
             switch transitionDirectionSegment.selectedSegmentIndex {
             case 0:
-                animation = .LeftEdge(size: size)
+                animation = .leftEdge(size: size)
                 break
             case 1:
-                animation = .RightEdge(size: size)
+                animation = .rightEdge(size: size)
                 break
             case 2:
-                animation = .TopEdge(size: size)
+                animation = .topEdge(size: size)
                 break
             case 3:
-                animation = .BottomEdge(size: size)
+                animation = .bottomEdge(size: size)
                 break
             default:
                 break
             }
             
             if animatedMotionSegment.selectedSegmentIndex == 0 {
-                motion = .EaseInOut(duration: 0.3)
+                motion = .easeInOut(duration: 0.3)
             }
             else {
-                motion = .Spring(duration: 0.6, velocity: 5, damping: 0.8)
+                motion = .spring(duration: 0.6, velocity: 5, damping: 0.8)
             }
         }
         
         if presentingViewSizeSegment.selectedSegmentIndex == 0 {
-            presentingViewSize = .Equal
+            presentingViewSize = .equal
         }
         else {
-            presentingViewSize = .Scale(scale: 0.95)
+            presentingViewSize = .scale(scale: 0.95)
         }
         
         simpleTransitionDelegate.setup(animation, motion: motion, presentingViewSize: presentingViewSize)
 
         presentedViewCtl.simpleTransitionDelegate = simpleTransitionDelegate
         
-        self.presentViewController(presentedViewCtl, animated: true, completion: nil)
+        self.present(presentedViewCtl, animated: true, completion: nil)
 
     }
+    
 }
