@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0810"
+   LastUpgradeVersion = "0820"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8257B3842A082A9DC1387C64BD08E1DE"
+               BlueprintIdentifier = "246810EC8C4CE3C69B3B762B7EDDC245"
                BuildableName = "SimpleTransition.framework"
                BlueprintName = "SimpleTransition"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8257B3842A082A9DC1387C64BD08E1DE"
+            BlueprintIdentifier = "246810EC8C4CE3C69B3B762B7EDDC245"
             BuildableName = "SimpleTransition.framework"
             BlueprintName = "SimpleTransition"
             ReferencedContainer = "container:Pods.xcodeproj">
@@ -63,7 +63,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8257B3842A082A9DC1387C64BD08E1DE"
+            BlueprintIdentifier = "246810EC8C4CE3C69B3B762B7EDDC245"
             BuildableName = "SimpleTransition.framework"
             BlueprintName = "SimpleTransition"
             ReferencedContainer = "container:Pods.xcodeproj">
