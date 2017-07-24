@@ -5,8 +5,10 @@
 [![License](https://img.shields.io/cocoapods/l/SimpleTransition.svg?style=flat)](http://cocoapods.org/pods/SimpleTransition)
 [![Platform](https://img.shields.io/cocoapods/p/SimpleTransition.svg?style=flat)](http://cocoapods.org/pods/SimpleTransition)
 
-## Usage
+## Demo
+![Demo](https://img.youtube.com/vi/bUai3MLJcNA/0.jpg)(https://www.youtube.com/watch?v=bUai3MLJcNA)
 
+## Example
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
 ## Requirements
