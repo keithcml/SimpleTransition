@@ -30,6 +30,21 @@ github "MingLoan/SimpleTransition"
 
 ## Usage
 
+```
+// init SimpleTransitionDelegate with presenting and presented view controller
+let simpleTransitionDelegate = SimpleTransition(presentingViewController: self, presentedViewController: presentedViewCtl)
+// setup delegate with options
+simpleTransitionDelegate.setup(
+            animation,
+            alignment: alignment,
+            motion: motion,
+            presentingViewSize: presentingViewSize)
+// assign simpleTransitionDelegate to presented view controller
+presentedViewCtl.simpleTransitionDelegate = simpleTransitionDelegate
+// call UIKit present method       
+present(presentedViewCtl, animated: true, completion: nil)
+        
+```
 
 ## Author
 
