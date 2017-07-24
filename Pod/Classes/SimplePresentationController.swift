@@ -70,7 +70,7 @@ class SimplePresentationController: UIPresentationController {
         
         switch presentedViewAlignment {
         case .topLeft:
-            break;
+            break
         case .topCenter:
             frame.origin = CGPoint(x: presentedView.frame.midX - frame.width/2, y: frame.minY)
             break

@@ -321,14 +321,6 @@ extension UIViewController {
             }
         }()
         dismissSwizzlingClosure
-        
-//        if Static.token_present == 0 {
-//            Static.token_present = 1
-//        }
-//        
-//        if Static.token_dismiss == 0 {
-//            Static.token_dismiss = 1
-//        }
     }
     
     // MARK: - Method Swizzling

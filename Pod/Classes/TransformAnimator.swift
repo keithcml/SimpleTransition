@@ -71,10 +71,6 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
         
         let containerView = transitionContext.containerView
         
-        //guard let containerView = transitionContext.containerView() else {
-        //    return
-        //}
-        
         var presentingView: UIView?
         var presentedView: UIView!
         
@@ -160,13 +156,13 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
             
             switch animation {
             case .leftEdge:
-                presentedView.transform = CGAffineTransform(translationX: -presentedView.bounds.maxX, y: 0)
+                presentedView.transform = CGAffineTransform(translationX: -containerView.bounds.width, y: 0)
                 break
             case .rightEdge:
-                presentedView.transform = CGAffineTransform(translationX: containerView.bounds.width - presentedView.frame.minX, y: 0)
+                presentedView.transform = CGAffineTransform(translationX: containerView.bounds.width, y: 0)
                 break
             case .topEdge:
-                presentedView.transform = CGAffineTransform(translationX: 0, y: -presentedView.bounds.maxY)
+                presentedView.transform = CGAffineTransform(translationX: 0, y: -containerView.bounds.maxY)
                 break
             case .bottomEdge:
                 presentedView.transform = CGAffineTransform(translationX: 0, y: containerView.bounds.height)
@@ -210,13 +206,13 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
             
             switch animation {
             case .leftEdge:
-                dismissTransform = CGAffineTransform(translationX: -presentedView.bounds.maxX, y: 0)
+                dismissTransform = CGAffineTransform(translationX: -containerView.bounds.width, y: 0)
                 break
             case .rightEdge:
-                dismissTransform = CGAffineTransform(translationX: containerView.bounds.width - presentedView.bounds.minX, y: 0)
+                dismissTransform = CGAffineTransform(translationX: containerView.bounds.width, y: 0)
                 break
             case .topEdge:
-                dismissTransform = CGAffineTransform(translationX: 0, y: -presentedView.bounds.maxY)
+                dismissTransform = CGAffineTransform(translationX: 0, y: -containerView.bounds.maxY)
                 break
             case .bottomEdge:
                 dismissTransform = CGAffineTransform(translationX: 0, y: containerView.bounds.height - presentedView.bounds.minY)
