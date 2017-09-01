@@ -1,4 +1,4 @@
-//  TransformAnimator.swift
+//  ZoomAnimator.swift
 //
 //  Copyright (c) 2016, Mingloan, Keith Chan.
 //
@@ -23,15 +23,17 @@
 import Foundation
 import UIKit
 
-final class TransformAnimator: NSObject {
+final class ZoomAnimator: NSObject {
     
     var duration: TimeInterval = 0.4
     var presenting = true
     weak var transitionDelegate: SimpleTransition?
     
+    var snapshotView: UIView?
+    var zoomDestRect: CGRect?
 }
 
-extension TransformAnimator: UIViewControllerAnimatedTransitioning {
+extension ZoomAnimator: UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return duration
@@ -155,7 +157,7 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
                 }
             }
             
-            //configure view opacity
+            // configure view opacity
             switch animation {
             case .leftEdge:
                 presentedView.transform = CGAffineTransform(translationX: -containerView.bounds.width, y: 0)
@@ -174,6 +176,19 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
                 break
             default:
                 break
+            }
+            
+            // configure zoom effect
+            // retriving zooming View
+            if let zoomEffectInfo = transitionDelegate.zoomEffectInfo, let zoomingView = zoomEffectInfo.zoomingView {
+                snapshotView = zoomingView.snapshotView(afterScreenUpdates: false)
+                if let sourceRect = zoomEffectInfo.sourceRect {
+                    snapshotView?.frame = sourceRect
+                }
+                else {
+                    snapshotView?.frame = containerView.convert(zoomingView.frame, from: presentingView)
+                }
+                zoomDestRect = zoomEffectInfo.destRect
             }
             
             animationBlock = {
@@ -196,6 +211,11 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
                 default:
                     break
                 }
+                
+                if let _snapshotView = self.snapshotView, let _zoomDestRect = self.zoomDestRect {
+                    _snapshotView.isHidden = false
+                    _snapshotView.frame = _zoomDestRect
+                }
             }
         }
         else {
@@ -206,8 +226,8 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
             
             var dismissTransform: CGAffineTransform = CGAffineTransform.identity
             
-            // configure view dimemsions
-            switch animation {
+            let _dismissalAnimation = transitionDelegate.dismissalAnimation ?? animation
+            switch _dismissalAnimation {
             case .leftEdge:
                 dismissTransform = CGAffineTransform(translationX: -containerView.bounds.width, y: 0)
                 break
@@ -228,7 +248,7 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
                 
                 presentedView.transform = dismissTransform
                 
-                switch animation {
+                switch _dismissalAnimation {
                 case .dissolve:
                     presentedView.alpha = 0.0
                     break
@@ -250,6 +270,9 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
         }
         
         completion = { (finished: Bool) -> () in
+            if let _snapshotView = self.snapshotView {
+                _snapshotView.isHidden = true
+            }
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
         
@@ -276,6 +299,3 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
     }
     
 }
-
-
-

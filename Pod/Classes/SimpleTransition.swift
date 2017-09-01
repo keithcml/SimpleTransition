@@ -85,6 +85,15 @@ public enum TransitionAnimatedMotionOptions {
     case spring(duration: TimeInterval, velocity: CGFloat, damping: CGFloat)
 }
 
+/**
+ Struct for zoom effect
+ */
+public struct ZoomEffect {
+    weak var zoomingView: UIView?
+    var sourceRect: CGRect?
+    var destRect: CGRect?
+}
+
 
 open class SimpleTransition: NSObject {
     
@@ -102,7 +111,7 @@ open class SimpleTransition: NSObject {
     /// Chrome View background Color
     open var chromeViewBackgroundColor = UIColor(white: 0.0, alpha: 0.3)
     
-    /// four parameters to control animations
+    /// five parameters to control animations
     open fileprivate(set) var presentingViewSizeOption: TransitionPresentingViewSizeOptions = .equal
     open fileprivate(set) var presentedViewAlignment: TransitionPresentedViewAlignment = .bottomCenter
     open fileprivate(set) var animatedMotionOption: TransitionAnimatedMotionOptions = .easeInOut(duration: 0.4)
@@ -131,6 +140,8 @@ open class SimpleTransition: NSObject {
             }
         }
     }
+    open fileprivate(set) var dismissalAnimation: TransitionAnimation?
+    open fileprivate(set) var zoomEffectInfo: ZoomEffect?
     
     // MARK: - Private Properties
     
@@ -145,6 +156,8 @@ open class SimpleTransition: NSObject {
     fileprivate(set) var customPresentedAnimator: UIViewControllerAnimatedTransitioning?
     fileprivate(set) var customDismissalAnimator: UIViewControllerAnimatedTransitioning?
     
+    fileprivate static var didFinishInitialSetup: Bool?
+    
     /**
      Designate Initializer.
      - Parameter presentingViewController:   The Presenting View Controller.
@@ -154,6 +167,11 @@ open class SimpleTransition: NSObject {
         
         assert(presentingViewController != nil, "no presentingViewController")
         assert(presentedViewController != nil, "no presentedViewController")
+        
+        if let _ = SimpleTransition.didFinishInitialSetup {} else {
+            SimpleTransition.didFinishInitialSetup = true
+            SimpleTransition.initialSetup()
+        }
         
         stm_presentingViewController = presentingViewController
         stm_presentedViewController = presentedViewController
@@ -170,12 +188,38 @@ open class SimpleTransition: NSObject {
         _ animation: TransitionAnimation = .bottomEdge(size: CGSize(width: FlexibleDimension, height: FlexibleDimension)),
         alignment: TransitionPresentedViewAlignment = .bottomCenter,
         motion: TransitionAnimatedMotionOptions = .easeInOut(duration: 0.4),
-        presentingViewSize: TransitionPresentingViewSizeOptions = .equal) {
+        presentingViewSize: TransitionPresentingViewSizeOptions = .equal,
+        zoomEffectInfo: ZoomEffect? = nil) {
         
         self.animation = animation
         self.presentedViewAlignment = alignment
         self.animatedMotionOption = motion
         self.presentingViewSizeOption = presentingViewSize
+        self.zoomEffectInfo = zoomEffectInfo
+    }
+    
+    /**
+     Built-in Zoom Animator Parameters Setup.
+     - Parameter zoomInAnimation:   The zoom in animation type.
+     - Parameter zoomOutAnimation:   The zoom out animation type.
+     - Parameter alignment: The Presented View alignment.
+     - Parameter motion: The animate motion of presentation.
+     - Parameter presentingViewSize: The Presenting View Controller Size after presentation.
+     */
+    open func setupZoom(
+        _ zoomInAnimation: TransitionAnimation = .dissolve(size: CGSize(width: FlexibleDimension, height: FlexibleDimension)),
+        zoomOutAnimation: TransitionAnimation = .dissolve(size: CGSize(width: FlexibleDimension, height: FlexibleDimension)),
+        alignment: TransitionPresentedViewAlignment = .bottomCenter,
+        motion: TransitionAnimatedMotionOptions = .easeInOut(duration: 0.4),
+        presentingViewSize: TransitionPresentingViewSizeOptions = .equal,
+        zoomEffectInfo: ZoomEffect? = nil) {
+        
+        self.animation = zoomInAnimation
+        self.dismissalAnimation = zoomOutAnimation
+        self.presentedViewAlignment = alignment
+        self.animatedMotionOption = motion
+        self.presentingViewSizeOption = presentingViewSize
+        self.zoomEffectInfo = zoomEffectInfo
     }
     
     /**
@@ -194,85 +238,12 @@ open class SimpleTransition: NSObject {
     }
 }
 
-// MARK: - UIViewControllerTransitioningDelegate
-extension SimpleTransition: UIViewControllerTransitioningDelegate {
+extension SimpleTransition {
     
-    public func animationController(forPresented presented: UIViewController,
-                                                          presenting: UIViewController,
-                                                                               source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        switch animation {
-        case .custom:
-            if let customPresentedAnimator = customPresentedAnimator {
-                return customPresentedAnimator
-            }
-            return nil
-        case .dissolve, .leftEdge, .rightEdge, .topEdge, .bottomEdge:
-            let t_animator = TransformAnimator()
-            t_animator.presenting = true
-            t_animator.transitionDelegate = self
-            animator = t_animator
-            return t_animator
-        }
-    }
-    
-    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        switch animation {
-        case .custom:
-            if let customDismissalAnimator = customDismissalAnimator {
-                return customDismissalAnimator
-            }
-            return nil
-        case .dissolve, .leftEdge, .rightEdge, .topEdge, .bottomEdge:
-            guard let t_animator = animator else { return nil }
-            guard let unwrappedAnimator = t_animator as? TransformAnimator else { return nil }
-            
-            unwrappedAnimator.presenting = false
-            return unwrappedAnimator
-        }
-    }
-    
-    public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let presentationController = SimplePresentationController(presentedViewController: presented, presenting:presenting)
-        presentationController.presentedViewAlignment = presentedViewAlignment
-        presentationController.dismissViaChromeView = dismissViaChromeView
-        presentationController.presentedViewSize = animation.getSize()
-        presentationController.keepPresentingViewOrientation = keepPresentingViewOrientation
-        presentationController.keepPresentingViewWhenPresentFullScreen = keepPresentingViewWhenPresentFullScreen
-        presentationController.chromeViewBackgroundColor = chromeViewBackgroundColor
-        return presentationController
-    }
-}
-
-extension UIViewController {
-    fileprivate struct AssociatedKeys {
-        static var simpleTransitionDelegate: SimpleTransition?
-    }
-    
-    public var simpleTransitionDelegate: SimpleTransition? {
-        get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.simpleTransitionDelegate) as? SimpleTransition
-        }
-        
-        set {
-            if let newValue = newValue {
-                objc_setAssociatedObject(
-                    self,
-                    &AssociatedKeys.simpleTransitionDelegate,
-                    newValue as SimpleTransition?,
-                    .OBJC_ASSOCIATION_RETAIN_NONATOMIC
-                )
-            }
-        }
-    }
-    
-    open override class func initialize() {
-//        struct Static {
-//            static var token_present = 0
-//            static var token_dismiss = 0
-//        }
-//        
+    // You must call this in app delegate
+    public static func initialSetup() {
         // make sure this isn't a subclass
-        if self != UIViewController.self { return }
+        // if self != UIViewController.self { return }
         
         let presentSwizzlingClosure: () = {
             let originalSelector = #selector(UIViewController.present(_:animated:completion:))
@@ -322,9 +293,95 @@ extension UIViewController {
         }()
         dismissSwizzlingClosure
     }
+}
+
+// MARK: - UIViewControllerTransitioningDelegate
+extension SimpleTransition: UIViewControllerTransitioningDelegate {
+    
+    public func animationController(forPresented presented: UIViewController,
+                                                          presenting: UIViewController,
+                                                                               source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        switch animation {
+        case .custom:
+            if let customPresentedAnimator = customPresentedAnimator {
+                return customPresentedAnimator
+            }
+            return nil
+        case .dissolve, .leftEdge, .rightEdge, .topEdge, .bottomEdge:
+            if let _ = zoomEffectInfo {
+                let z_animator = ZoomAnimator()
+                z_animator.presenting = true
+                z_animator.transitionDelegate = self
+                animator = z_animator
+                return z_animator
+            }
+            else {
+                let t_animator = TransformAnimator()
+                t_animator.presenting = true
+                t_animator.transitionDelegate = self
+                animator = t_animator
+                return t_animator
+            }
+        }
+    }
+    
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        switch animation {
+        case .custom:
+            if let customDismissalAnimator = customDismissalAnimator {
+                return customDismissalAnimator
+            }
+            return nil
+        case .dissolve, .leftEdge, .rightEdge, .topEdge, .bottomEdge:
+            guard let _animator = animator else { return nil }
+            if let unwrappedAnimator = _animator as? TransformAnimator {
+                unwrappedAnimator.presenting = false
+                return unwrappedAnimator
+            }
+            else if let unwrappedAnimator = _animator as? ZoomAnimator {
+                unwrappedAnimator.presenting = false
+                return unwrappedAnimator
+            }
+            return nil
+        }
+    }
+    
+    public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        let presentationController = SimplePresentationController(presentedViewController: presented, presenting:presenting)
+        presentationController.presentedViewAlignment = presentedViewAlignment
+        presentationController.dismissViaChromeView = dismissViaChromeView
+        presentationController.presentedViewSize = animation.getSize()
+        presentationController.keepPresentingViewOrientation = keepPresentingViewOrientation
+        presentationController.keepPresentingViewWhenPresentFullScreen = keepPresentingViewWhenPresentFullScreen
+        presentationController.chromeViewBackgroundColor = chromeViewBackgroundColor
+        return presentationController
+    }
+}
+
+extension UIViewController {
+    fileprivate struct AssociatedKeys {
+        static var simpleTransitionDelegate: SimpleTransition?
+    }
+    
+    public var simpleTransitionDelegate: SimpleTransition? {
+        get {
+            return objc_getAssociatedObject(self, &AssociatedKeys.simpleTransitionDelegate) as? SimpleTransition
+        }
+        
+        set {
+            if let newValue = newValue {
+                objc_setAssociatedObject(
+                    self,
+                    &AssociatedKeys.simpleTransitionDelegate,
+                    newValue as SimpleTransition?,
+                    .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+                )
+            }
+        }
+    }
     
     // MARK: - Method Swizzling
-    @objc private func stm_present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> ())? = nil) {
+    @objc fileprivate func stm_present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> ())? = nil) {
 
         if let vc = viewControllerToPresent as? UIAlertController {
             self.stm_present(vc, animated: flag, completion: completion)
@@ -353,7 +410,7 @@ extension UIViewController {
         }
     }
     
-    @objc private func stm_dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+    @objc fileprivate func stm_dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         
         if (presentedViewController as? UIAlertController) != nil {
             self.stm_dismiss(animated: flag, completion: completion)

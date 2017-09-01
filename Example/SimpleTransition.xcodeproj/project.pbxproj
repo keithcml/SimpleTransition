@@ -218,7 +218,7 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = WWN45Y873L;
+						DevelopmentTeam = Z8EH486Q72;
 						DevelopmentTeamName = "Chaatz Limited";
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
@@ -509,7 +509,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Team Chaatz (HA9M7CTKN3)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = WWN45Y873L;
+				DEVELOPMENT_TEAM = Z8EH486Q72;
 				INFOPLIST_FILE = SimpleTransition/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -529,7 +529,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = WWN45Y873L;
+				DEVELOPMENT_TEAM = Z8EH486Q72;
 				INFOPLIST_FILE = SimpleTransition/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
