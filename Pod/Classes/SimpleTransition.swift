@@ -92,6 +92,12 @@ public struct ZoomEffect {
     weak var zoomingView: UIView?
     var sourceRect: CGRect?
     var destRect: CGRect?
+    
+    public init(view: UIView?, sourceRect: CGRect?, destRect: CGRect?) {
+        self.zoomingView = view
+        self.sourceRect = sourceRect
+        self.destRect = destRect
+    }
 }
 
 

@@ -189,6 +189,10 @@ extension ZoomAnimator: UIViewControllerAnimatedTransitioning {
                     snapshotView?.frame = containerView.convert(zoomingView.frame, from: presentingView)
                 }
                 zoomDestRect = zoomEffectInfo.destRect
+                
+                if let _snapshotView = snapshotView {
+                    containerView.addSubview(_snapshotView)
+                }
             }
             
             animationBlock = {

@@ -27,6 +27,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var verticleAlignmentLabel: UILabel!
     @IBOutlet weak var transitionDirectionLabel: UILabel!
     
+    @IBOutlet weak var imageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +36,21 @@ class ViewController: UIViewController {
         animatedMotionSegment.isHidden = true
         transitionDirectionLabel.isHidden = true
         transitionDirectionSegment.isHidden = true
+        
+        self.imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imageTap(_:))))
+    }
+    
+    @IBAction func imageTap(_ sender: Any) {
+        
+        let presentedViewCtl: PresentedViewController! = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PresentedViewController") as! PresentedViewController
+        
+        let simpleTransitionDelegate = SimpleTransition(presentingViewController: self, presentedViewController: presentedViewCtl)
+        simpleTransitionDelegate.setupZoom(zoomEffectInfo: ZoomEffect(view: imageView, sourceRect: nil, destRect: CGRect(x: 0, y: 0, width: view.frame.width, height: 200)))
+            
+        
+        presentedViewCtl.simpleTransitionDelegate = simpleTransitionDelegate
+        
+        present(presentedViewCtl, animated: true, completion: nil)
     }
     
     @IBAction func animationChanged(_ sender: AnyObject) {
