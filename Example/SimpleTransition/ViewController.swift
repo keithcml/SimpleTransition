@@ -42,15 +42,8 @@ class ViewController: UIViewController {
     
     @IBAction func imageTap(_ sender: Any) {
         
-        let presentedViewCtl: PresentedViewController! = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PresentedViewController") as! PresentedViewController
-        
-        let simpleTransitionDelegate = SimpleTransition(presentingViewController: self, presentedViewController: presentedViewCtl)
-        simpleTransitionDelegate.setupZoom(zoomEffectInfo: ZoomEffect(view: imageView, sourceRect: nil, destRect: CGRect(x: 0, y: 0, width: view.frame.width, height: 200)))
-            
-        
-        presentedViewCtl.simpleTransitionDelegate = simpleTransitionDelegate
-        
-        present(presentedViewCtl, animated: true, completion: nil)
+        present(isImageTap: true)
+
     }
     
     @IBAction func animationChanged(_ sender: AnyObject) {
@@ -78,7 +71,10 @@ class ViewController: UIViewController {
     }
     
     @IBAction func present(_ sender: AnyObject) {
-
+        present(isImageTap: false)
+    }
+    
+    private func present(isImageTap: Bool) {
         let presentedViewCtl: PresentedViewController! = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PresentedViewController") as! PresentedViewController
         
         let simpleTransitionDelegate = SimpleTransition(presentingViewController: self, presentedViewController: presentedViewCtl)
@@ -98,6 +94,7 @@ class ViewController: UIViewController {
         
         if animationTypeSegment.selectedSegmentIndex == 0 {
             animation = .dissolve(size: size)
+            motion = .easeInOut(duration: 0.2)
         }
         else {
             switch transitionDirectionSegment.selectedSegmentIndex {
@@ -121,7 +118,7 @@ class ViewController: UIViewController {
                 motion = .easeInOut(duration: 0.3)
             }
             else {
-                motion = .spring(duration: 0.6, velocity: 5, damping: 0.8)
+                motion = .spring(duration: 0.4, velocity: 5, damping: 0.8)
             }
         }
         
@@ -164,12 +161,32 @@ class ViewController: UIViewController {
             break
         }
         
-        simpleTransitionDelegate.setup(
-            animation,
-            alignment: alignment,
-            motion: motion,
-            presentingViewSize: presentingViewSize)
-
+        if isImageTap {
+            
+            let zoomEffect = ZoomEffect(zoomingView: self.imageView,
+                                        explicitSourceRect: nil,
+                                        destinationView: { () -> UIView in
+                                            return presentedViewCtl.imageView
+                                        })
+            
+            simpleTransitionDelegate.setupZoom(
+                .dissolve(size: size),
+                zoomOutAnimation: animation,
+                alignment: alignment,
+                motion: motion,
+                presentingViewSize: presentingViewSize,
+                zoomEffectInfo: zoomEffect)
+        }
+        else {
+            simpleTransitionDelegate.setup(
+                animation,
+                alignment: alignment,
+                motion: motion,
+                presentingViewSize: presentingViewSize)
+        }
+        
+        
+        
         presentedViewCtl.simpleTransitionDelegate = simpleTransitionDelegate
         
         present(presentedViewCtl, animated: true, completion: nil)

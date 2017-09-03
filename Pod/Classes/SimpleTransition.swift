@@ -89,14 +89,22 @@ public enum TransitionAnimatedMotionOptions {
  Struct for zoom effect
  */
 public struct ZoomEffect {
-    weak var zoomingView: UIView?
-    var sourceRect: CGRect?
-    var destRect: CGRect?
+    var zoomingView: UIView
+    var destinationView: (() -> UIView)
     
-    public init(view: UIView?, sourceRect: CGRect?, destRect: CGRect?) {
-        self.zoomingView = view
-        self.sourceRect = sourceRect
-        self.destRect = destRect
+    var animationDidBegin: (() -> ()) = {}
+    var animationBlock: (() -> ()) = {}
+    var completionBlock: (() -> ()) = {}
+    
+    var explicitSourceRect: CGRect?
+    
+    public init(zoomingView: UIView,
+                explicitSourceRect: CGRect? = nil,
+                destinationView: @escaping () -> UIView) {
+        
+        self.zoomingView = zoomingView
+        self.destinationView = destinationView
+        self.explicitSourceRect = explicitSourceRect
     }
 }
 

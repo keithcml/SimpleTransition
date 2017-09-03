@@ -62,6 +62,9 @@ extension TransformAnimator: UIViewControllerAnimatedTransitioning {
         case .bottomEdge(let size):
             presentedViewSize = size
             break
+        case .dissolve(let size):
+            presentedViewSize = size
+            break
         default:
             break
         }

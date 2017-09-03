@@ -243,6 +243,9 @@
                             <constraint firstItem="Nta-Be-jrI" firstAttribute="centerY" secondItem="kJg-74-PoY" secondAttribute="centerY" id="mXg-Jz-QX0"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="TCJ-vh-Ftj" id="Xdt-bk-4hg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JIR-5B-M7b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
