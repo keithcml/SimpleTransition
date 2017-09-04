@@ -85,32 +85,7 @@ public enum TransitionAnimatedMotionOptions {
     case spring(duration: TimeInterval, velocity: CGFloat, damping: CGFloat)
 }
 
-/**
- Struct for zoom effect
- */
-public struct ZoomEffect {
-    var removeZoomingViewAfterPresentation = true
-    var zoomingView: UIView
-    var destinationView: (() -> UIView)
-    
-    var animationDidBegin: (() -> ()) = {}
-    var animationBlock: (() -> ()) = {}
-    var completionBlock: (() -> ()) = {}
-    
-    var explicitSourceRect: CGRect?
-    
-    public init(zoomingView: UIView,
-                explicitSourceRect: CGRect? = nil,
-                destinationView: @escaping () -> UIView) {
-        
-        self.zoomingView = zoomingView
-        self.destinationView = destinationView
-        self.explicitSourceRect = explicitSourceRect
-    }
-}
-
-
-open class SimpleTransition: NSObject {
+public final class SimpleTransition: NSObject {
     
     // MARK: - Public Properties
     /// represents flexible width or flexible height to the presenting view controller frame.
@@ -130,7 +105,7 @@ open class SimpleTransition: NSObject {
     open fileprivate(set) var presentingViewSizeOption: TransitionPresentingViewSizeOptions = .equal
     open fileprivate(set) var presentedViewAlignment: TransitionPresentedViewAlignment = .bottomCenter
     open fileprivate(set) var animatedMotionOption: TransitionAnimatedMotionOptions = .easeInOut(duration: 0.4)
-    open fileprivate(set) var animation: TransitionAnimation = .bottomEdge(size: CGSize(width: FlexibleDimension, height: FlexibleDimension))  {
+    open fileprivate(set) var presentingAnimation: TransitionAnimation = .bottomEdge(size: CGSize(width: FlexibleDimension, height: FlexibleDimension))  {
         willSet {
             switch newValue as TransitionAnimation {
             case .leftEdge:
@@ -147,7 +122,6 @@ open class SimpleTransition: NSObject {
                 break
             case .dissolve:
                 presentedViewAlignment = .centerCenter
-                //fadingEnabled = true
                 break
             default:
                 presentedViewAlignment = .centerCenter
@@ -156,7 +130,7 @@ open class SimpleTransition: NSObject {
         }
     }
     open fileprivate(set) var dismissalAnimation: TransitionAnimation?
-    open fileprivate(set) var zoomEffectInfo: ZoomEffect?
+    open fileprivate(set) var zoomConfig: ZoomConfig?
     
     // MARK: - Private Properties
     
@@ -171,7 +145,7 @@ open class SimpleTransition: NSObject {
     fileprivate(set) var customPresentedAnimator: UIViewControllerAnimatedTransitioning?
     fileprivate(set) var customDismissalAnimator: UIViewControllerAnimatedTransitioning?
     
-    fileprivate static var didFinishInitialSetup: Bool?
+    private static var didFinishInitialSetup: Bool?
     
     /**
      Designate Initializer.
@@ -199,42 +173,19 @@ open class SimpleTransition: NSObject {
      - Parameter motion: The animate motion of presentation.
      - Parameter presentingViewSize: The Presenting View Controller Size after presentation.
      */
-    open func setup(
-        _ animation: TransitionAnimation = .bottomEdge(size: CGSize(width: FlexibleDimension, height: FlexibleDimension)),
-        alignment: TransitionPresentedViewAlignment = .bottomCenter,
-        motion: TransitionAnimatedMotionOptions = .easeInOut(duration: 0.4),
-        presentingViewSize: TransitionPresentingViewSizeOptions = .equal,
-        zoomEffectInfo: ZoomEffect? = nil) {
+    open func setupTransition(presentingAnimation: TransitionAnimation = .bottomEdge(size: CGSize(width: FlexibleDimension, height: FlexibleDimension)),
+                              dismissalAnimation: TransitionAnimation? = nil,
+                              alignment: TransitionPresentedViewAlignment = .bottomCenter,
+                              motion: TransitionAnimatedMotionOptions = .easeInOut(duration: 0.4),
+                              presentingViewSize: TransitionPresentingViewSizeOptions = .equal,
+                              zoomConfig: ZoomConfig? = nil) {
         
-        self.animation = animation
+        self.presentingAnimation = presentingAnimation
+        self.dismissalAnimation = dismissalAnimation
         self.presentedViewAlignment = alignment
         self.animatedMotionOption = motion
         self.presentingViewSizeOption = presentingViewSize
-        self.zoomEffectInfo = zoomEffectInfo
-    }
-    
-    /**
-     Built-in Zoom Animator Parameters Setup.
-     - Parameter zoomInAnimation:   The zoom in animation type.
-     - Parameter zoomOutAnimation:   The zoom out animation type.
-     - Parameter alignment: The Presented View alignment.
-     - Parameter motion: The animate motion of presentation.
-     - Parameter presentingViewSize: The Presenting View Controller Size after presentation.
-     */
-    open func setupZoom(
-        _ zoomInAnimation: TransitionAnimation = .dissolve(size: CGSize(width: FlexibleDimension, height: FlexibleDimension)),
-        zoomOutAnimation: TransitionAnimation = .dissolve(size: CGSize(width: FlexibleDimension, height: FlexibleDimension)),
-        alignment: TransitionPresentedViewAlignment = .bottomCenter,
-        motion: TransitionAnimatedMotionOptions = .easeInOut(duration: 0.4),
-        presentingViewSize: TransitionPresentingViewSizeOptions = .equal,
-        zoomEffectInfo: ZoomEffect? = nil) {
-        
-        self.animation = zoomInAnimation
-        self.dismissalAnimation = zoomOutAnimation
-        self.presentedViewAlignment = alignment
-        self.animatedMotionOption = motion
-        self.presentingViewSizeOption = presentingViewSize
-        self.zoomEffectInfo = zoomEffectInfo
+        self.zoomConfig = zoomConfig
     }
     
     /**
@@ -246,7 +197,7 @@ open class SimpleTransition: NSObject {
         _ customPresentedAnimator: UIViewControllerAnimatedTransitioning?,
         customDismissalAnimator: UIViewControllerAnimatedTransitioning?) {
         
-        self.animation = .custom
+        self.presentingAnimation = .custom
         self.customPresentedAnimator = customPresentedAnimator
         self.customDismissalAnimator = customDismissalAnimator
         
@@ -316,7 +267,7 @@ extension SimpleTransition: UIViewControllerTransitioningDelegate {
     public func animationController(forPresented presented: UIViewController,
                                     presenting: UIViewController,
                                     source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        switch animation {
+        switch presentingAnimation {
         case .custom:
             if let customPresentedAnimator = customPresentedAnimator {
                 return customPresentedAnimator
@@ -332,7 +283,7 @@ extension SimpleTransition: UIViewControllerTransitioningDelegate {
     }
     
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        switch animation {
+        switch presentingAnimation {
         case .custom:
             if let customDismissalAnimator = customDismissalAnimator {
                 return customDismissalAnimator
@@ -349,7 +300,7 @@ extension SimpleTransition: UIViewControllerTransitioningDelegate {
         let presentationController = SimplePresentationController(presentedViewController: presented, presenting:presenting)
         presentationController.presentedViewAlignment = presentedViewAlignment
         presentationController.dismissViaChromeView = dismissViaChromeView
-        presentationController.presentedViewSize = animation.getSize()
+        presentationController.presentedViewSize = presentingAnimation.getSize()
         presentationController.keepPresentingViewOrientation = keepPresentingViewOrientation
         presentationController.keepPresentingViewWhenPresentFullScreen = keepPresentingViewWhenPresentFullScreen
         presentationController.chromeViewBackgroundColor = chromeViewBackgroundColor
@@ -389,7 +340,7 @@ extension UIViewController {
         
         if let transitionDelegate = viewControllerToPresent.simpleTransitionDelegate {
             
-            if CGSize.zero.equalTo(transitionDelegate.animation.getSize()) {
+            if CGSize.zero.equalTo(transitionDelegate.presentingAnimation.getSize()) {
                 viewControllerToPresent.modalPresentationStyle = transitionDelegate.keepPresentingViewWhenPresentFullScreen ? .overFullScreen : .fullScreen
             }
             else {
@@ -409,7 +360,7 @@ extension UIViewController {
         }
     }
     
-    @objc fileprivate func stm_dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+    @objc fileprivate func stm_dismiss(animated flag: Bool, completion: (() -> ())? = nil) {
         
         if (presentedViewController as? UIAlertController) != nil {
             self.stm_dismiss(animated: flag, completion: completion)

@@ -25,4 +25,8 @@ class PresentedViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    deinit {
+        print("deinit")
+    }
+    
 }

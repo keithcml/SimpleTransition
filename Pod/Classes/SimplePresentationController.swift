@@ -24,7 +24,7 @@
 import Foundation
 import UIKit
 
-class SimplePresentationController: UIPresentationController {
+final class SimplePresentationController: UIPresentationController {
     
     // default value
     var keepPresentingViewOrientation = false

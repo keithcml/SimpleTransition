@@ -48,7 +48,7 @@ extension DefaultAnimator: UIViewControllerAnimatedTransitioning {
         }
         
         let presentingViewSizeOption = transitionDelegate.presentingViewSizeOption
-        let animation = transitionDelegate.animation
+        let animation = transitionDelegate.presentingAnimation
         
         var presentedViewSize = SimpleTransition.FlexibleSize
         switch animation {
@@ -145,17 +145,17 @@ extension DefaultAnimator: UIViewControllerAnimatedTransitioning {
             startFrame.origin = origin
             
             // configure zoom effect
-            if let zoomEffectInfo = transitionDelegate.zoomEffectInfo {
+            if let zoomConfig = transitionDelegate.zoomConfig, let destinationView = zoomConfig.destinationView?() {
                 
-                zoomEffectInfo.zoomingView.isHidden = true
-                snapshotView = zoomEffectInfo.zoomingView.snapshotView(afterScreenUpdates: false)
-                if let sourceRect = zoomEffectInfo.explicitSourceRect {
+                zoomConfig.zoomingView.isHidden = true
+                snapshotView = zoomConfig.zoomingView.snapshotView(afterScreenUpdates: false)
+                if let sourceRect = zoomConfig.explicitSourceRect {
                     snapshotView?.frame = sourceRect
                 }
                 else {
-                    snapshotView?.frame = containerView.convert(zoomEffectInfo.zoomingView.frame, from: presentingView)
+                    snapshotView?.frame = containerView.convert(zoomConfig.zoomingView.frame, from: presentingView)
                 }
-                destView = zoomEffectInfo.destinationView()
+                destView = destinationView
                 destView?.isHidden = true
             }
 
@@ -198,9 +198,13 @@ extension DefaultAnimator: UIViewControllerAnimatedTransitioning {
                     _snapshotView.removeFromSuperview()
                 }
                 self.destView?.isHidden = false
-                if let zoomEffectInfo = transitionDelegate.zoomEffectInfo,
-                    let removeZoomingViewAfterPresentation = transitionDelegate.zoomEffectInfo?.removeZoomingViewAfterPresentation {
-                    zoomEffectInfo.zoomingView.isHidden = removeZoomingViewAfterPresentation
+                if let zoomConfig = transitionDelegate.zoomConfig {
+                    if zoomConfig.disableZoomOutEffect {
+                        zoomConfig.zoomingView.isHidden = false
+                    }
+                    else {
+                        zoomConfig.zoomingView.isHidden = zoomConfig.removeZoomingViewAfterPresentation
+                    }
                 }
                 
                 let success = !transitionContext.transitionWasCancelled
@@ -237,15 +241,16 @@ extension DefaultAnimator: UIViewControllerAnimatedTransitioning {
                 break
             }
             
-            // snapshotView
-            if let _snapshotView = self.snapshotView, let _destView = self.destView {
-                containerView.addSubview(_snapshotView)
-                _snapshotView.isHidden = false
-                _snapshotView.frame = containerView.convert(_destView.frame, from: presentedView)
-                destView?.isHidden = true
+            if let zoomConfig = transitionDelegate.zoomConfig, !zoomConfig.disableZoomOutEffect  {
+                // snapshotView
+                if let _snapshotView = self.snapshotView, let _destView = self.destView {
+                    containerView.addSubview(_snapshotView)
+                    _snapshotView.isHidden = false
+                    _snapshotView.frame = containerView.convert(_destView.frame, from: presentedView)
+                    destView?.isHidden = true
+                }
+                zoomConfig.zoomingView.isHidden = true
             }
-            
-            transitionDelegate.zoomEffectInfo?.zoomingView.isHidden = true
 
             animationBlock = {
                 
@@ -261,10 +266,10 @@ extension DefaultAnimator: UIViewControllerAnimatedTransitioning {
                 }
                 
                 if let _snapshotView = self.snapshotView,
-                    let zoomingView = transitionDelegate.zoomEffectInfo?.zoomingView,
-                    let presentingViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) {
-                    _snapshotView.frame = presentingViewController.view.convert(zoomingView.frame, to: containerView)
-                    
+                    let zoomConfig = transitionDelegate.zoomConfig,
+                    let presentingViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to),
+                    !zoomConfig.disableZoomOutEffect {
+                    _snapshotView.frame = presentingViewController.view.convert(zoomConfig.zoomingView.frame, to: containerView)
                 }
             }
             
@@ -272,12 +277,14 @@ extension DefaultAnimator: UIViewControllerAnimatedTransitioning {
                 
                 self.snapshotView?.isHidden = true
                 
-                transitionDelegate.zoomEffectInfo?.zoomingView.isHidden = false
+                transitionDelegate.zoomConfig?.zoomingView.isHidden = false
                 
                 let success = !transitionContext.transitionWasCancelled
                 if success {
                     presentedView.removeFromSuperview()
                 }
+                
+                transitionDelegate.zoomConfig?.cleanup()
                 
                 transitionContext.completeTransition(success)
             }
