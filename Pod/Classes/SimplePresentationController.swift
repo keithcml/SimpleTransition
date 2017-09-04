@@ -49,7 +49,9 @@ class SimplePresentationController: UIPresentationController {
     
     let chromeView = UIView()
     
-    fileprivate var boundsOfPresentedViewInContainerView = CGRect.zero
+    fileprivate lazy var boundsOfPresentedViewInContainerView: CGRect = {
+        return CGRect(origin: CGPoint.zero, size: self.presentedViewSize)
+    }()
     
     lazy var tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap(_:)))
     
@@ -106,26 +108,8 @@ class SimplePresentationController: UIPresentationController {
     }
     
     override func containerViewWillLayoutSubviews() {
-        
         guard let containerView = containerView else { return }
-        
-        guard let presentedView = presentedView else { return }
-        
-        chromeView.frame = containerView.bounds;
-        
-        if (!SimpleTransition.FlexibleSize.equalTo(presentedViewSize)) {
-            
-            let width = presentedViewSize.width == SimpleTransition.FlexibleDimension ? presentedView.bounds.width : presentedViewSize.width
-            let height = presentedViewSize.height == SimpleTransition.FlexibleDimension ? presentedView.bounds.height
-                : presentedViewSize.height
-            
-            boundsOfPresentedViewInContainerView = CGRect(x: 0, y: 0, width: width, height: height)
-            presentedView.frame = frameOfPresentedViewInContainerView
-        }
-        else {
-            boundsOfPresentedViewInContainerView = presentedView.bounds
-        }
-        
+        chromeView.frame = containerView.bounds
     }
     
     override func presentationTransitionWillBegin() {

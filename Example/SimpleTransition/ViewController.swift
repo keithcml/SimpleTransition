@@ -170,7 +170,7 @@ class ViewController: UIViewController {
                                         })
             
             simpleTransitionDelegate.setupZoom(
-                .dissolve(size: size),
+                animation,
                 zoomOutAnimation: animation,
                 alignment: alignment,
                 motion: motion,

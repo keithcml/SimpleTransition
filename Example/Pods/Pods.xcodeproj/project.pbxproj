@@ -63,7 +63,6 @@
 		76036D32625A56D480D84AA46961EF91 /* Nimble-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = BCBDD456B535FEADB8D72DB83652D74D /* Nimble-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		770D22DA8696904C583DB44C7686DB25 /* QuickSpec.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C14CA30770ECA99AC2E8582C5D3C4DB /* QuickSpec.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		78F3DE174B4F8D368EF8EEFD7EE62087 /* BeVoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C64DCE9D714CA88C06BDCC413FD3661 /* BeVoid.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
-		79E386B6EFEAB80813CA6097F0D96E1F /* TransformAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB66CB96256CB0B696FFF85346305F8B /* TransformAnimator.swift */; };
 		7C025346058C234B13FA0CB4713A75C7 /* QuickSelectedTestSuiteBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B9FC85D7FEB2B0433347BA137CC7E1 /* QuickSelectedTestSuiteBuilder.swift */; };
 		7D6269A3CFE53C28DAA6B92E8FC017A7 /* FailureMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CEB9B86795A0FDAA385DB81A49672B /* FailureMessage.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		7F6750C7B1847733370B18C4CBFE32DF /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE1F2D1C9D5935F6B6B5CC49C89E323 /* Errors.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
@@ -81,7 +80,7 @@
 		97C3D5CC3B6786CDB15EF4A7050443AB /* XCTestSuite+QuickTestSuiteBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB66FCF4920E93C91641504EBEC78D1 /* XCTestSuite+QuickTestSuiteBuilder.m */; };
 		98CBB8CBCFC377DE9F3A6FF221A0D0D8 /* Pods-SimpleTransition_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 66FC22FD78066B3D9C171AEBBE90CB81 /* Pods-SimpleTransition_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AF235C16362BA00BFBF12147907E953 /* BeEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C33CF42AD6E1A448E98D4CAFB155DAA /* BeEmpty.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
-		9B30EDB91F59445200E09387 /* ZoomAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B30EDB81F59445200E09387 /* ZoomAnimator.swift */; };
+		9B30EDB91F59445200E09387 /* DefaultAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B30EDB81F59445200E09387 /* DefaultAnimator.swift */; };
 		9BEBD1791C233763A8DC13080BFB99C9 /* Stringers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F54711B380CFE23B29ACEF631A3929 /* Stringers.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		9D7D9E41BC2F06F2A4203D8D01AE94F0 /* SimpleTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0AEDCBD720129CE7E6BDCAF9FA6060 /* SimpleTransition.swift */; };
 		9E95D6E15DBE9B0FC92AAF60D42D1464 /* Nimble-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F795FA3DE9E15CB7DD017F791C55A8AC /* Nimble-dummy.m */; };
@@ -237,7 +236,7 @@
 		98BEFCA54D25BED3A87F8A8BC72FDE02 /* ExampleMetadata.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExampleMetadata.swift; path = Sources/Quick/ExampleMetadata.swift; sourceTree = "<group>"; };
 		9A4149CBE238527B194D1F9ABA8B1425 /* QuickConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = QuickConfiguration.h; path = Sources/QuickObjectiveC/Configuration/QuickConfiguration.h; sourceTree = "<group>"; };
 		9AD041EED5C6A1B6A82C71C9E5AA3FE1 /* Quick.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Quick.modulemap; sourceTree = "<group>"; };
-		9B30EDB81F59445200E09387 /* ZoomAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomAnimator.swift; sourceTree = "<group>"; };
+		9B30EDB81F59445200E09387 /* DefaultAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultAnimator.swift; sourceTree = "<group>"; };
 		9B33599C99BED1F331BF7FBC397141F0 /* Pods-SimpleTransition_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SimpleTransition_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		9BB1FA4E1DD555F459E31D6ECB9DB70C /* CwlCatchException.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CwlCatchException.h; path = Sources/Lib/CwlPreconditionTesting/CwlCatchException/CwlCatchException/CwlCatchException.h; sourceTree = "<group>"; };
 		9C33CF42AD6E1A448E98D4CAFB155DAA /* BeEmpty.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeEmpty.swift; path = Sources/Nimble/Matchers/BeEmpty.swift; sourceTree = "<group>"; };
@@ -251,7 +250,6 @@
 		A93E0F701C3C0E4ACE79BE196A744B4A /* Pods-SimpleTransition_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SimpleTransition_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		AAEA58BA3A98ABA9AF85ACD8AE3CED36 /* ExampleGroup.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExampleGroup.swift; path = Sources/Quick/ExampleGroup.swift; sourceTree = "<group>"; };
 		AB5F24F5B8F8A0C3B6C4849DE0077251 /* Nimble.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Nimble.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AB66CB96256CB0B696FFF85346305F8B /* TransformAnimator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransformAnimator.swift; sourceTree = "<group>"; };
 		ACB1FA806FF532E4E4DF8E6B4FFEB9C6 /* MatcherFunc.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MatcherFunc.swift; path = Sources/Nimble/Matchers/MatcherFunc.swift; sourceTree = "<group>"; };
 		AE0AEDCBD720129CE7E6BDCAF9FA6060 /* SimpleTransition.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SimpleTransition.swift; sourceTree = "<group>"; };
 		AECEA2EDA41473899EE391CA038EDC38 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -406,8 +404,7 @@
 			children = (
 				90468F1457CB62150807FA1DD5538B0F /* SimplePresentationController.swift */,
 				AE0AEDCBD720129CE7E6BDCAF9FA6060 /* SimpleTransition.swift */,
-				AB66CB96256CB0B696FFF85346305F8B /* TransformAnimator.swift */,
-				9B30EDB81F59445200E09387 /* ZoomAnimator.swift */,
+				9B30EDB81F59445200E09387 /* DefaultAnimator.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -849,8 +846,7 @@
 				E5F80AC8395C8642E698B6AFCD10B03E /* SimplePresentationController.swift in Sources */,
 				00926FCEDDB9E21E7E5EE445D84727B8 /* SimpleTransition-dummy.m in Sources */,
 				9D7D9E41BC2F06F2A4203D8D01AE94F0 /* SimpleTransition.swift in Sources */,
-				9B30EDB91F59445200E09387 /* ZoomAnimator.swift in Sources */,
-				79E386B6EFEAB80813CA6097F0D96E1F /* TransformAnimator.swift in Sources */,
+				9B30EDB91F59445200E09387 /* DefaultAnimator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

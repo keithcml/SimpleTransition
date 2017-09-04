@@ -89,6 +89,7 @@ public enum TransitionAnimatedMotionOptions {
  Struct for zoom effect
  */
 public struct ZoomEffect {
+    var removeZoomingViewAfterPresentation = true
     var zoomingView: UIView
     var destinationView: (() -> UIView)
     
@@ -313,8 +314,8 @@ extension SimpleTransition {
 extension SimpleTransition: UIViewControllerTransitioningDelegate {
     
     public func animationController(forPresented presented: UIViewController,
-                                                          presenting: UIViewController,
-                                                                               source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+                                    presenting: UIViewController,
+                                    source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         switch animation {
         case .custom:
             if let customPresentedAnimator = customPresentedAnimator {
@@ -322,20 +323,11 @@ extension SimpleTransition: UIViewControllerTransitioningDelegate {
             }
             return nil
         case .dissolve, .leftEdge, .rightEdge, .topEdge, .bottomEdge:
-            if let _ = zoomEffectInfo {
-                let z_animator = ZoomAnimator()
-                z_animator.presenting = true
-                z_animator.transitionDelegate = self
-                animator = z_animator
-                return z_animator
-            }
-            else {
-                let t_animator = TransformAnimator()
-                t_animator.presenting = true
-                t_animator.transitionDelegate = self
-                animator = t_animator
-                return t_animator
-            }
+            let defaultAnimator = DefaultAnimator()
+            defaultAnimator.presenting = true
+            defaultAnimator.transitionDelegate = self
+            animator = defaultAnimator
+            return defaultAnimator
         }
     }
     
@@ -347,16 +339,9 @@ extension SimpleTransition: UIViewControllerTransitioningDelegate {
             }
             return nil
         case .dissolve, .leftEdge, .rightEdge, .topEdge, .bottomEdge:
-            guard let _animator = animator else { return nil }
-            if let unwrappedAnimator = _animator as? TransformAnimator {
-                unwrappedAnimator.presenting = false
-                return unwrappedAnimator
-            }
-            else if let unwrappedAnimator = _animator as? ZoomAnimator {
-                unwrappedAnimator.presenting = false
-                return unwrappedAnimator
-            }
-            return nil
+            guard let defaultAnimator = animator as? DefaultAnimator else { return nil }
+            defaultAnimator.presenting = false
+            return defaultAnimator
         }
     }
     

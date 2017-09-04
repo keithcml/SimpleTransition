@@ -1,4 +1,4 @@
-//  ZoomAnimator.swift
+//  DefaultAnimator.swift
 //
 //  Copyright (c) 2016, Mingloan, Keith Chan.
 //
@@ -23,7 +23,7 @@
 import Foundation
 import UIKit
 
-final class ZoomAnimator: NSObject {
+final class DefaultAnimator: NSObject {
     
     var duration: TimeInterval = 0.4
     var presenting = true
@@ -31,12 +31,10 @@ final class ZoomAnimator: NSObject {
     
     fileprivate var snapshotView: UIView?
     fileprivate weak var destView: UIView?
-    
-    fileprivate var snapShotDestRect = CGRect.zero
 
 }
 
-extension ZoomAnimator: UIViewControllerAnimatedTransitioning {
+extension DefaultAnimator: UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return duration
@@ -50,7 +48,6 @@ extension ZoomAnimator: UIViewControllerAnimatedTransitioning {
         }
         
         let presentingViewSizeOption = transitionDelegate.presentingViewSizeOption
-        let presentedViewAlignment = transitionDelegate.presentedViewAlignment
         let animation = transitionDelegate.animation
         
         var presentedViewSize = SimpleTransition.FlexibleSize
@@ -74,10 +71,11 @@ extension ZoomAnimator: UIViewControllerAnimatedTransitioning {
             break
         }
         
-        let fromView = transitionContext.view(forKey: UITransitionContextViewKey.from)
-        let toView = transitionContext.view(forKey: UITransitionContextViewKey.to)
+        let fromView = transitionContext.view(forKey: .from)
+        let toView = transitionContext.view(forKey: .to)
         
         let containerView = transitionContext.containerView
+        let containerViewFrame = containerView.frame
         
         var presentingView: UIView?
         var presentedView: UIView!
@@ -96,101 +94,57 @@ extension ZoomAnimator: UIViewControllerAnimatedTransitioning {
         
         if presenting {
             
-            if presentingView != nil {
-                containerView.insertSubview(presentingView!, at: 0)
+            var startFrame = CGRect.zero
+            var finalFrame = CGRect.zero
+            if let toViewController = transitionContext.viewController(forKey: .to) {
+                // fix for rotation bug in iOS 9
+                startFrame = transitionContext.initialFrame(for: toViewController)
+                finalFrame = transitionContext.finalFrame(for: toViewController)
             }
             
-            containerView.addSubview(presentedView)
+            var width: CGFloat = 0.0
+            var height: CGFloat = 0.0
             
-            // fix for rotation bug in iOS 9
-            // presentedView.frame = transitionContext.finalFrame(for: presentedView)
-            
-            // configure view dimemsions
-            if !presentedViewSize.equalTo(SimpleTransition.FlexibleSize) {
-                
-                var width: CGFloat = 0.0
-                var height: CGFloat = 0.0
-                
-                if presentedViewSize.width == SimpleTransition.FlexibleDimension {
-                    width = presentedView.bounds.width
-                }
-                else {
-                    width = presentedViewSize.width
-                }
-                
-                if presentedViewSize.height == SimpleTransition.FlexibleDimension {
-                    height = presentedView.bounds.height
-                }
-                else {
-                    height = presentedViewSize.height
-                }
-                
-                presentedView.bounds = CGRect(x: 0, y: 0, width: width, height: height)
-                
-                switch presentedViewAlignment {
-                case .topLeft:
-                    break
-                case .topCenter:
-                    presentedView.center = CGPoint(x: containerView.bounds.midX,
-                                                   y: presentedView.bounds.midY)
-                    break
-                case .topRight:
-                    presentedView.center = CGPoint(x: containerView.bounds.midX,
-                                                   y: presentedView.bounds.midY)
-                    break
-                case .centerLeft:
-                    presentedView.center = CGPoint(x: presentedView.bounds.midX,
-                                                   y: containerView.bounds.midY)
-                    break
-                case .centerCenter:
-                    presentedView.center = CGPoint(x: containerView.bounds.midX,
-                                                   y: containerView.bounds.midY)
-                    break
-                case .centerRight:
-                    presentedView.center = CGPoint(x: containerView.bounds.width - presentedView.bounds.width/2,
-                                                   y: containerView.bounds.midY)
-                    break
-                case .bottomLeft:
-                    presentedView.center = CGPoint(x: presentedView.bounds.midX,
-                                                   y: containerView.bounds.height - presentedView.bounds.height/2)
-                    break
-                case .bottomCenter:
-                    presentedView.center = CGPoint(x: containerView.bounds.midX,
-                                                   y: containerView.bounds.height - presentedView.bounds.height/2)
-                    break
-                case .bottomRight:
-                    presentedView.center = CGPoint(x: containerView.bounds.width - presentedView.bounds.width/2,
-                                                   y: containerView.bounds.height - presentedView.bounds.height/2)
-                    break
-                    
-                }
+            if presentedViewSize.width == SimpleTransition.FlexibleDimension {
+                width = containerViewFrame.width
+            }
+            else {
+                width = presentedViewSize.width
             }
             
-            // configure view opacity
+            if presentedViewSize.height == SimpleTransition.FlexibleDimension {
+                height = containerViewFrame.height
+            }
+            else {
+                height = presentedViewSize.height
+            }
+            
+            startFrame.size = CGSize(width: width, height: height)
+
             var origin = CGPoint(x: 0, y: 0)
             switch animation {
             case .leftEdge:
-                origin = CGPoint(x: -containerView.bounds.width, y: 0)
+                origin = CGPoint(x: -containerView.bounds.width, y: finalFrame.minY)
                 break
             case .rightEdge:
-                origin = CGPoint(x: containerView.bounds.width, y: 0)
+                origin = CGPoint(x: containerView.bounds.width, y: finalFrame.minY)
                 break
             case .topEdge:
-                origin = CGPoint(x:0, y: -containerView.bounds.maxY)
+                origin = CGPoint(x: finalFrame.minX, y: -containerView.bounds.maxY)
                 break
             case .bottomEdge:
-                origin = CGPoint(x: 0, y: containerView.bounds.height)
+                origin = CGPoint(x: finalFrame.minX, y: containerView.bounds.height)
                 break
             case .dissolve:
+                origin = finalFrame.origin
                 presentedView.alpha = 0.0
                 break
             default:
                 break
             }
-            presentedView.frame.origin = origin
+            startFrame.origin = origin
             
             // configure zoom effect
-            // retriving zooming View
             if let zoomEffectInfo = transitionDelegate.zoomEffectInfo {
                 
                 zoomEffectInfo.zoomingView.isHidden = true
@@ -203,58 +157,62 @@ extension ZoomAnimator: UIViewControllerAnimatedTransitioning {
                 }
                 destView = zoomEffectInfo.destinationView()
                 destView?.isHidden = true
-                
-                if let _snapshotView = snapshotView {
-                    containerView.addSubview(_snapshotView)
-                }
-                
-                print("\(presentedView.frame)")
-                print("\(presentedView.convert(zoomEffectInfo.destinationView().frame, to: nil))")
             }
+
+            // add subviews
+            containerView.addSubview(presentedView)
+            presentedView.frame = startFrame
+            presentedView.layoutIfNeeded()
+            
+            if let _snapshotView = snapshotView {
+                containerView.addSubview(_snapshotView)
+            }
+            
+            //print("startFrame : \(startFrame)")
+            //print("finalFrame : \(finalFrame)")
             
             animationBlock = {
                 
-                presentedView.frame.origin = CGPoint.zero
+                presentedView.frame = finalFrame
                 
-                switch animation {
-                case .dissolve:
+                if case .dissolve = animation {
                     presentedView.alpha = 1.0
-                    break
-                default:
-                    break
                 }
                 
-                switch presentingViewSizeOption {
-                case .scale(let scale):
-                    if let presentingViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) {
-                        presentingViewController.view.transform = CGAffineTransform(scaleX: scale, y: scale)
-                    }
-                    break
-                default:
-                    break
+                if case .scale(let scale) = presentingViewSizeOption, let presentingViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) {
+                    presentingViewController.view.transform = CGAffineTransform(scaleX: scale, y: scale)
                 }
                 
                 if let _snapshotView = self.snapshotView {
                     _snapshotView.isHidden = false
                     if let _destView = self.destView {
-                        _snapshotView.frame = presentedView.convert(_destView.frame, to: containerView)
+                        _snapshotView.frame = containerView.convert(_destView.frame, from: presentedView)
                     }
                 }
             }
             
-            completion = { (finished: Bool) -> () in
+            completion = { (finished) -> () in
                 if let _snapshotView = self.snapshotView {
+                    
                     _snapshotView.isHidden = true
                     _snapshotView.removeFromSuperview()
                 }
                 self.destView?.isHidden = false
-                transitionDelegate.zoomEffectInfo?.zoomingView.isHidden = false
+                if let zoomEffectInfo = transitionDelegate.zoomEffectInfo,
+                    let removeZoomingViewAfterPresentation = transitionDelegate.zoomEffectInfo?.removeZoomingViewAfterPresentation {
+                    zoomEffectInfo.zoomingView.isHidden = removeZoomingViewAfterPresentation
+                }
                 
-                transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+                let success = !transitionContext.transitionWasCancelled
+                if !success {
+                    presentedView.removeFromSuperview()
+                }
+                
+                transitionContext.completeTransition(success)
             }
         }
         else {
-            
+            // no presenting view if shouldRemovePresentersView in SimplePresentationController return false
             if presentingView != nil {
                 containerView.insertSubview(presentingView!, at: 0)
             }
@@ -279,35 +237,49 @@ extension ZoomAnimator: UIViewControllerAnimatedTransitioning {
                 break
             }
             
+            // snapshotView
+            if let _snapshotView = self.snapshotView, let _destView = self.destView {
+                containerView.addSubview(_snapshotView)
+                _snapshotView.isHidden = false
+                _snapshotView.frame = containerView.convert(_destView.frame, from: presentedView)
+                destView?.isHidden = true
+            }
+            
+            transitionDelegate.zoomEffectInfo?.zoomingView.isHidden = true
+
             animationBlock = {
                 
                 presentedView.transform = dismissTransform
                 
-                switch _dismissalAnimation {
-                case .dissolve:
+                if case .dissolve = _dismissalAnimation {
                     presentedView.alpha = 0.0
-                    break
-                default:
-                    break
                 }
                 
-                switch presentingViewSizeOption {
-                case .scale:
-                    if let presentingViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) {
-                        presentingViewController.view.transform = CGAffineTransform.identity
-                        presentingViewController.view.frame = containerView.frame
-                    }
-                    break
-                default:
-                    break
+                if case .scale = presentingViewSizeOption, let presentingViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) {
+                    presentingViewController.view.transform = CGAffineTransform.identity
+                    presentingViewController.view.frame = containerView.frame
+                }
+                
+                if let _snapshotView = self.snapshotView,
+                    let zoomingView = transitionDelegate.zoomEffectInfo?.zoomingView,
+                    let presentingViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) {
+                    _snapshotView.frame = presentingViewController.view.convert(zoomingView.frame, to: containerView)
+                    
                 }
             }
             
             completion = { (finished: Bool) -> () in
-                if let _snapshotView = self.snapshotView {
-                    _snapshotView.isHidden = true
+                
+                self.snapshotView?.isHidden = true
+                
+                transitionDelegate.zoomEffectInfo?.zoomingView.isHidden = false
+                
+                let success = !transitionContext.transitionWasCancelled
+                if success {
+                    presentedView.removeFromSuperview()
                 }
-                transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+                
+                transitionContext.completeTransition(success)
             }
         }
         
