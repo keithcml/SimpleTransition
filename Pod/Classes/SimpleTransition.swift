@@ -98,11 +98,10 @@ public final class SimpleTransition: NSObject {
     open var keepPresentingViewOrientation = false
     
     /// presentation style
-    open var isPresentedOnDefinedContext = false
-    open var isPresentingViewControllerAsDefinedContext = false
+    open var isPresentedFullScreen = true
+    open var autoDefinesPresentationContext = false
     
-    open var keepPresentingViewWhenPresentFullScreen = false
-    open var keepPresentingViewWhenPresentOnCurrentContext = false
+    open var keepPresentingViewAfterPresentation = false
     
     /// Chrome View background Color
     open var chromeViewBackgroundColor = UIColor(white: 0.0, alpha: 0.3)
@@ -308,7 +307,7 @@ extension SimpleTransition: UIViewControllerTransitioningDelegate {
         presentationController.dismissViaChromeView = dismissViaChromeView
         presentationController.presentedViewSize = presentingAnimation.getSize()
         presentationController.keepPresentingViewOrientation = keepPresentingViewOrientation
-        presentationController.keepPresentingViewWhenPresentFullScreen = keepPresentingViewWhenPresentFullScreen
+        presentationController.keepPresentingViewAfterPresentation = keepPresentingViewAfterPresentation
         presentationController.chromeViewBackgroundColor = chromeViewBackgroundColor
         return presentationController
     }
@@ -349,15 +348,15 @@ extension UIViewController {
             if CGSize.zero.equalTo(transitionDelegate.presentingAnimation.getSize()) {
                 
                 // ensure presenting view is defined presentation context
-                if transitionDelegate.isPresentingViewControllerAsDefinedContext {
+                if transitionDelegate.autoDefinesPresentationContext {
                     definesPresentationContext = true
                 }
                 
-                if transitionDelegate.isPresentedOnDefinedContext {
-                    viewControllerToPresent.modalPresentationStyle = transitionDelegate.keepPresentingViewOrientation ? .overCurrentContext : .currentContext
+                if transitionDelegate.isPresentedFullScreen {
+                    viewControllerToPresent.modalPresentationStyle = transitionDelegate.keepPresentingViewAfterPresentation ? .overFullScreen : .fullScreen
                 }
                 else {
-                    viewControllerToPresent.modalPresentationStyle = transitionDelegate.keepPresentingViewWhenPresentFullScreen ? .overFullScreen : .fullScreen
+                    viewControllerToPresent.modalPresentationStyle = transitionDelegate.keepPresentingViewAfterPresentation ? .overCurrentContext : .currentContext
                 }
             }
             else {

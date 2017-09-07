@@ -14,6 +14,7 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		9A3918451C3386000000C6A7 /* PresentedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3918441C3386000000C6A7 /* PresentedViewController.swift */; };
+		9A4609FA1F61A85800694602 /* InnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4609F91F61A85800694602 /* InnerViewController.swift */; };
 		A2C2BA60776ABD0A8E904307 /* Pods_SimpleTransition_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3FFC460207CA0CEBA123D66 /* Pods_SimpleTransition_Example.framework */; };
 		F25FC639A64F7744BD70B650 /* Pods_SimpleTransition_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5825713BB6E334B6657447E9 /* Pods_SimpleTransition_Tests.framework */; };
 /* End PBXBuildFile section */
@@ -45,6 +46,7 @@
 		721AB6EE2FD7C98D2492B6F2 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		8631FBA4F537D4FB0E9D3596 /* Pods-SimpleTransition_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleTransition_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleTransition_Example/Pods-SimpleTransition_Example.release.xcconfig"; sourceTree = "<group>"; };
 		9A3918441C3386000000C6A7 /* PresentedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentedViewController.swift; sourceTree = "<group>"; };
+		9A4609F91F61A85800694602 /* InnerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InnerViewController.swift; sourceTree = "<group>"; };
 		A5B88BF88B5B0CABC01990A4 /* Pods-SimpleTransition_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleTransition_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleTransition_Example/Pods-SimpleTransition_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		E0EADE02F36D2ED09CF7F773 /* Pods-SimpleTransition_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleTransition_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleTransition_Tests/Pods-SimpleTransition_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		F3FFC460207CA0CEBA123D66 /* Pods_SimpleTransition_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SimpleTransition_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +100,7 @@
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				9A3918441C3386000000C6A7 /* PresentedViewController.swift */,
+				9A4609F91F61A85800694602 /* InnerViewController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -369,6 +372,7 @@
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				9A3918451C3386000000C6A7 /* PresentedViewController.swift in Sources */,
+				9A4609FA1F61A85800694602 /* InnerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

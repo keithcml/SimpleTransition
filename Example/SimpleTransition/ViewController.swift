@@ -306,7 +306,7 @@ class ViewController: UIViewController {
                                         destinationView: { () -> UIView in
                                             return presentedViewCtl.imageView
                                         })
-            config.disableZoomOutEffect = true
+            // config.disableZoomOutEffect = true
             
             simpleTransitionDelegate.setupTransition(
                 presentingAnimation: .dissolve(size: size),

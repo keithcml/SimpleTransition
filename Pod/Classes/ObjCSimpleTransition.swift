@@ -76,10 +76,22 @@ import UIKit
             simpleTransitionDelegate?.keepPresentingViewOrientation = keepPresentingViewOrientation
         }
     }
-    /// keep presenting view
-    @objc open var keepPresentingViewWhenPresentFullScreen = false {
+    
+    @objc open var isPresentedFullScreen = false {
         didSet {
-            simpleTransitionDelegate?.keepPresentingViewWhenPresentFullScreen = keepPresentingViewWhenPresentFullScreen
+            simpleTransitionDelegate?.isPresentedFullScreen = isPresentedFullScreen
+        }
+    }
+    @objc open var autoDefinesPresentationContext = false {
+        didSet {
+            simpleTransitionDelegate?.autoDefinesPresentationContext = autoDefinesPresentationContext
+        }
+    }
+    
+    /// keep presenting view
+    @objc open var keepPresentingViewAfterPresentation = false {
+        didSet {
+            simpleTransitionDelegate?.keepPresentingViewAfterPresentation = keepPresentingViewAfterPresentation
         }
     }
     /// Chrome View background Color

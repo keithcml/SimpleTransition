@@ -28,11 +28,11 @@ final class SimplePresentationController: UIPresentationController {
     
     // default value
     var keepPresentingViewOrientation = false
-    var keepPresentingViewWhenPresentFullScreen = false
+    var keepPresentingViewAfterPresentation = false
     var presentedViewAlignment: TransitionPresentedViewAlignment = .centerCenter
     var dismissViaChromeView = false {
         willSet {
-            if (newValue) {
+            if newValue {
                 addTapOnChromeView();
             }
             else {
@@ -158,7 +158,7 @@ final class SimplePresentationController: UIPresentationController {
     }
     
     override var shouldPresentInFullscreen : Bool {
-        if (SimpleTransition.FlexibleSize.equalTo(presentedViewSize) && !keepPresentingViewWhenPresentFullScreen) {
+        if (SimpleTransition.FlexibleSize.equalTo(presentedViewSize) && !keepPresentingViewAfterPresentation) {
             return true
         }
         return false

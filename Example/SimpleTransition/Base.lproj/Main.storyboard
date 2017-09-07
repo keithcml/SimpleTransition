@@ -262,6 +262,39 @@
             </objects>
             <point key="canvasLocation" x="959" y="139"/>
         </scene>
+        <!--Inner View Controller-->
+        <scene sceneID="iF8-Px-9Tt">
+            <objects>
+                <viewController restorationIdentifier="InnerViewController" storyboardIdentifier="InnerViewController" id="WRI-da-h3q" customClass="InnerViewController" customModule="SimpleTransition_Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jHp-h7-uF6"/>
+                        <viewControllerLayoutGuide type="bottom" id="a5N-a7-liK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="NnF-1o-skq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="88h-3X-wdN">
+                                <rect key="frame" x="160" y="318" width="54" height="30"/>
+                                <state key="normal" title="Dismiss">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="close:" destination="WRI-da-h3q" eventType="touchUpInside" id="Yue-iS-ckn"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.031372549020000001" green="0.79215686269999996" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="88h-3X-wdN" firstAttribute="centerY" secondItem="NnF-1o-skq" secondAttribute="centerY" id="B0P-JA-J21"/>
+                            <constraint firstItem="88h-3X-wdN" firstAttribute="centerX" secondItem="NnF-1o-skq" secondAttribute="centerX" id="Sna-80-ur5"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="caS-mc-lSu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1281" y="201"/>
+        </scene>
     </scenes>
     <resources>
         <image name="test" width="500" height="500"/>
