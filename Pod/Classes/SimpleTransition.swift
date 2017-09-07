@@ -96,8 +96,14 @@ public final class SimpleTransition: NSObject {
     open var dismissViaChromeView = true
     /// keep presenting view orientation, allow presented view to change orientation only
     open var keepPresentingViewOrientation = false
-    /// keep presenting view
+    
+    /// presentation style
+    open var isPresentedOnDefinedContext = false
+    open var isPresentingViewControllerAsDefinedContext = false
+    
     open var keepPresentingViewWhenPresentFullScreen = false
+    open var keepPresentingViewWhenPresentOnCurrentContext = false
+    
     /// Chrome View background Color
     open var chromeViewBackgroundColor = UIColor(white: 0.0, alpha: 0.3)
     
@@ -341,11 +347,24 @@ extension UIViewController {
         if let transitionDelegate = viewControllerToPresent.simpleTransitionDelegate {
             
             if CGSize.zero.equalTo(transitionDelegate.presentingAnimation.getSize()) {
-                viewControllerToPresent.modalPresentationStyle = transitionDelegate.keepPresentingViewWhenPresentFullScreen ? .overFullScreen : .fullScreen
+                
+                // ensure presenting view is defined presentation context
+                if transitionDelegate.isPresentingViewControllerAsDefinedContext {
+                    definesPresentationContext = true
+                }
+                
+                if transitionDelegate.isPresentedOnDefinedContext {
+                    viewControllerToPresent.modalPresentationStyle = transitionDelegate.keepPresentingViewOrientation ? .overCurrentContext : .currentContext
+                }
+                else {
+                    viewControllerToPresent.modalPresentationStyle = transitionDelegate.keepPresentingViewWhenPresentFullScreen ? .overFullScreen : .fullScreen
+                }
             }
             else {
+                // Custom Class SimplePresentationController will be used.
                 viewControllerToPresent.modalPresentationStyle = .custom
             }
+            
             viewControllerToPresent.modalPresentationCapturesStatusBarAppearance = true
             viewControllerToPresent.transitioningDelegate = viewControllerToPresent.simpleTransitionDelegate
             

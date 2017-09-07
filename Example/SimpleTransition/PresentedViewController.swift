@@ -29,4 +29,8 @@ class PresentedViewController: UIViewController {
         print("deinit")
     }
     
+    @IBAction func present(_ sender: Any) {
+        
+    }
+    
 }
