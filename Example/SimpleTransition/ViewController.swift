@@ -303,7 +303,7 @@ class ViewController: UIViewController {
             
             let config = ZoomConfig(zoomingView: self.imageView,
                                         explicitSourceRect: nil,
-                                        destinationView: { () -> UIView in
+                                        destinationView: { () -> UIView? in
                                             return presentedViewCtl.imageView
                                         })
             // config.disableZoomOutEffect = true

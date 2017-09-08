@@ -380,12 +380,19 @@ extension UIViewController {
     
     @objc fileprivate func stm_dismiss(animated flag: Bool, completion: (() -> ())? = nil) {
         
+        
+        
         if (presentedViewController as? UIAlertController) != nil {
             self.stm_dismiss(animated: flag, completion: completion)
             return
         }
         
-        if simpleTransitionDelegate != nil {
+        if let transitionDelegate = simpleTransitionDelegate {
+            // cleanup
+            if transitionDelegate.autoDefinesPresentationContext {
+                presentingViewController?.definesPresentationContext = false
+            }
+            
             // things to do ...
             self.stm_dismiss(animated: flag, completion: completion)
         }

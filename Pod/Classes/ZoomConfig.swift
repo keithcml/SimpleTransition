@@ -32,11 +32,11 @@ import UIKit
     @objc public var removeZoomingViewAfterPresentation = true
     @objc public var disableZoomOutEffect = false
     internal var zoomingView: UIView
-    internal var destinationView: (() -> UIView)?
+    internal var destinationView: (() -> UIView?)?
     internal var explicitSourceRect: CGRect?
     
     @objc public init(zoomingView: UIView,
-                      destinationView: (() -> UIView)?) {
+                      destinationView: (() -> UIView?)?) {
         
         self.zoomingView = zoomingView
         self.destinationView = destinationView
@@ -46,7 +46,7 @@ import UIKit
     
     public init(zoomingView: UIView,
                       explicitSourceRect: CGRect? = nil,
-                      destinationView: (() -> UIView)?) {
+                      destinationView: (() -> UIView?)?) {
         
         self.zoomingView = zoomingView
         self.destinationView = destinationView

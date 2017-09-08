@@ -144,25 +144,27 @@ extension DefaultAnimator: UIViewControllerAnimatedTransitioning {
             }
             startFrame.origin = origin
             
-            // configure zoom effect
+            // add subviews
+            containerView.addSubview(presentedView)
+            presentedView.frame = startFrame
+            presentedView.layoutIfNeeded()
+            
+            // configure zoom effect after presented view layout pass
             if let zoomConfig = transitionDelegate.zoomConfig, let destinationView = zoomConfig.destinationView?() {
                 
-                zoomConfig.zoomingView.isHidden = true
                 snapshotView = zoomConfig.zoomingView.snapshotView(afterScreenUpdates: false)
                 if let sourceRect = zoomConfig.explicitSourceRect {
                     snapshotView?.frame = sourceRect
                 }
                 else {
-                    snapshotView?.frame = containerView.convert(zoomConfig.zoomingView.frame, from: presentingView)
+                    snapshotView?.frame = containerView.convert(zoomConfig.zoomingView.frame, from: zoomConfig.zoomingView.superview)
+                    // hide source view
+                    zoomConfig.zoomingView.isHidden = true
                 }
+                
                 destView = destinationView
                 destView?.isHidden = true
             }
-
-            // add subviews
-            containerView.addSubview(presentedView)
-            presentedView.frame = startFrame
-            presentedView.layoutIfNeeded()
             
             if let _snapshotView = snapshotView {
                 containerView.addSubview(_snapshotView)
@@ -185,8 +187,8 @@ extension DefaultAnimator: UIViewControllerAnimatedTransitioning {
                 
                 if let _snapshotView = self.snapshotView {
                     _snapshotView.isHidden = false
-                    if let _destView = self.destView {
-                        _snapshotView.frame = containerView.convert(_destView.frame, from: presentedView)
+                    if let _destView = self.destView, let destViewSuperview = _destView.superview {
+                        _snapshotView.frame = containerView.convert(_destView.frame, from: destViewSuperview)
                     }
                 }
             }
@@ -241,15 +243,18 @@ extension DefaultAnimator: UIViewControllerAnimatedTransitioning {
                 break
             }
             
-            if let zoomConfig = transitionDelegate.zoomConfig, !zoomConfig.disableZoomOutEffect  {
+            if let zoomConfig = transitionDelegate.zoomConfig {
+                zoomConfig.zoomingView.isHidden = false
+                
                 // snapshotView
-                if let _snapshotView = self.snapshotView, let _destView = self.destView {
+                if let _snapshotView = self.snapshotView, let _destView = self.destView, !zoomConfig.disableZoomOutEffect {
                     containerView.addSubview(_snapshotView)
                     _snapshotView.isHidden = false
-                    _snapshotView.frame = containerView.convert(_destView.frame, from: presentedView)
+                    _snapshotView.frame = containerView.convert(_destView.frame, from: _destView.superview)
                     destView?.isHidden = true
+                    zoomConfig.zoomingView.isHidden = true
                 }
-                zoomConfig.zoomingView.isHidden = true
+                
             }
 
             animationBlock = {
@@ -267,9 +272,9 @@ extension DefaultAnimator: UIViewControllerAnimatedTransitioning {
                 
                 if let _snapshotView = self.snapshotView,
                     let zoomConfig = transitionDelegate.zoomConfig,
-                    let presentingViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to),
+                    let zoomingViewSuperview = zoomConfig.zoomingView.superview,
                     !zoomConfig.disableZoomOutEffect {
-                    _snapshotView.frame = presentingViewController.view.convert(zoomConfig.zoomingView.frame, to: containerView)
+                    _snapshotView.frame = zoomingViewSuperview.convert(zoomConfig.zoomingView.frame, to: containerView)
                 }
             }
             
